@@ -55,6 +55,27 @@ class SiteController extends Controller
     }
 
     /**
+     * Testing database connections and information displays
+     *
+     * @return array
+     */
+    public function actionTest()
+    {
+//        $connection = Yii::$app->db;
+//        $connection = new \yii\db\Connection([
+//            'dsn' => 'sqlite:@app/database/voteja.sqlite',
+//        ]);
+
+
+//        $test = $connection->createCommand('SELECT * FROM country')->queryAll();
+//        echo '<pre>';
+//        print_r($test);
+//        die((string)__line__);
+
+        return [];
+    }
+
+    /**
      * Displays homepage.
      *
      * @return string
