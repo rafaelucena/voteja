@@ -21,16 +21,44 @@ use Yii;
  */
 class SqliteController extends Controller
 {
+    private $file_path;
+
+    private $file_handler;
+
+    private $file_content;
+
     /**
      * This command echoes what you have entered as the message.
      * @param string $message the message to be echoed.
      */
     public function actionIndex($message = 'hello feioso')
     {
-        $myfile = fopen(Yii::getAlias('@app') . "/database/voteja_mysql.sql", "r") or die("Unable to open file!");
-        echo fread($myfile,filesize(Yii::getAlias('@app') . "/database/voteja_mysql.sql"));
-        fclose($myfile);
+        $this->file_path = Yii::getAlias('@app') . "/database/voteja_mysql.sql";
+
+        if ($this->openQueryFile()) {
+            echo $this->getQueryFileContent();
+            $this->closeQueryFile();
+        }
 
         return ExitCode::OK;
+    }
+
+    private function openQueryFile()
+    {
+        $this->file_handler = fopen($this->file_path, "r") or die("Unable to open file!");
+
+        return $this->file_handler;
+    }
+
+    private function getQueryFileContent()
+    {
+        $this->file_content = fread($this->file_handler, filesize($this->file_path));
+
+        return $this->file_content;
+    }
+
+    private function closeQueryFile()
+    {
+        return fclose($this->file_handler);
     }
 }
