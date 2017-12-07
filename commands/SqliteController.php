@@ -36,7 +36,15 @@ class SqliteController extends Controller
         $this->file_path = Yii::getAlias('@app') . "/database/voteja_mysql.sql";
 
         if ($this->openQueryFile()) {
-            echo $this->getQueryFileContent();
+            $mainString = $this->getQueryFileContent();
+
+            $noHeaders = $this->removeHeaders($mainString);
+
+            $differentQuotes = $this->replaceQuotes($noHeaders);
+
+            $noSchemas = $this->removeSchemas($differentQuotes);
+
+            echo $noSchemas;
             $this->closeQueryFile();
         }
 
@@ -60,5 +68,39 @@ class SqliteController extends Controller
     private function closeQueryFile()
     {
         return fclose($this->file_handler);
+    }
+
+    /** ============================================================================================================ **/
+
+    private function removeHeaders($string)
+    {
+        $headerStart = 'DROP TABLE IF EXISTS';
+
+        $findHeader = strpos($string, $headerStart);
+
+        if ($findHeader) {
+            $string = substr($string, $findHeader);
+        }
+
+        return $string;
+    }
+
+    private function replaceQuotes($string)
+    {
+        $oldQuote = '`';
+        $newQuote = "'";
+
+        $string = str_replace($oldQuote, $newQuote, $string);
+
+        return $string;
+    }
+
+    private function removeSchemas($string)
+    {
+        $findSchemaPattern = "('mydb'[?\.])";
+
+        $string = preg_replace($findSchemaPattern, '', $string);
+
+        return $string;
     }
 }
