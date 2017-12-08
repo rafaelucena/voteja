@@ -49,11 +49,17 @@ class SqliteController extends Controller
 
             $differentQuotes = $this->replaceQuotes($mainString);
 
-            $noSchemas = $this->removeSchemas($differentQuotes);
+            $noSets = $this->removeSets($differentQuotes);
+
+            $noComments = $this->removeComments($noSets);
+
+            $noSchemas = $this->removeSchemas($noComments);
 
             $noHeaders = $this->removeHeaders($noSchemas);
 
-            echo $noHeaders;
+            $noEngines = $this->removeEngines($noHeaders);
+
+            echo $noEngines;
 
             $this->closeQueryFile();
         }
@@ -81,6 +87,9 @@ class SqliteController extends Controller
         return $this->file_content;
     }
 
+    /**
+     * @return bool
+     */
     private function closeQueryFile()
     {
         return fclose($this->file_handler);
@@ -98,6 +107,32 @@ class SqliteController extends Controller
         $newQuote = "'";
 
         $string = str_replace($oldQuote, $newQuote, $string);
+
+        return $string;
+    }
+
+    /**
+     * @param $string
+     * @return null|string|string[]
+     */
+    private function removeSets($string)
+    {
+        $findSetsPattern = "/(?=SET)(.*)/";
+
+        $string = preg_replace($findSetsPattern, '', $string);
+
+        return $string;
+    }
+
+    /**
+     * @param $string
+     * @return null|string|string[]
+     */
+    private function removeComments($string)
+    {
+        $findCommentsPattern = "/(?=--)(.*)/";
+
+        $string = preg_replace($findCommentsPattern, '', $string);
 
         return $string;
     }
@@ -133,6 +168,19 @@ class SqliteController extends Controller
         if ($findHeader) {
             $string = substr($string, $findHeader);
         }
+
+        return $string;
+    }
+
+    /**
+     * @param $string
+     * @return mixed
+     */
+    private function removeEngines($string)
+    {
+        $findEnginePattern = "/\n(ENGINE).*(\w){3,8}/";
+
+        $string = preg_replace($findEnginePattern, '', $string);
 
         return $string;
     }
