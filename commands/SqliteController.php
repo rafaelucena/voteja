@@ -21,36 +21,49 @@ use Yii;
  */
 class SqliteController extends Controller
 {
+    /**
+     * @var
+     */
     private $file_path;
 
+    /**
+     * @var
+     */
     private $file_handler;
 
+    /**
+     * @var
+     */
     private $file_content;
 
     /**
      * This command echoes what you have entered as the message.
      * @param string $message the message to be echoed.
      */
-    public function actionIndex($message = 'hello feioso')
+    public function actionIndex()
     {
         $this->file_path = Yii::getAlias('@app') . "/database/voteja_mysql.sql";
 
         if ($this->openQueryFile()) {
             $mainString = $this->getQueryFileContent();
 
-            $noHeaders = $this->removeHeaders($mainString);
-
-            $differentQuotes = $this->replaceQuotes($noHeaders);
+            $differentQuotes = $this->replaceQuotes($mainString);
 
             $noSchemas = $this->removeSchemas($differentQuotes);
 
-            echo $noSchemas;
+            $noHeaders = $this->removeHeaders($noSchemas);
+
+            echo $noHeaders;
+
             $this->closeQueryFile();
         }
 
         return ExitCode::OK;
     }
 
+    /**
+     * @return bool|resource
+     */
     private function openQueryFile()
     {
         $this->file_handler = fopen($this->file_path, "r") or die("Unable to open file!");
@@ -58,6 +71,9 @@ class SqliteController extends Controller
         return $this->file_handler;
     }
 
+    /**
+     * @return bool|string
+     */
     private function getQueryFileContent()
     {
         $this->file_content = fread($this->file_handler, filesize($this->file_path));
@@ -72,19 +88,10 @@ class SqliteController extends Controller
 
     /** ============================================================================================================ **/
 
-    private function removeHeaders($string)
-    {
-        $headerStart = 'DROP TABLE IF EXISTS';
-
-        $findHeader = strpos($string, $headerStart);
-
-        if ($findHeader) {
-            $string = substr($string, $findHeader);
-        }
-
-        return $string;
-    }
-
+    /**
+     * @param $string
+     * @return mixed
+     */
     private function replaceQuotes($string)
     {
         $oldQuote = '`';
@@ -95,11 +102,37 @@ class SqliteController extends Controller
         return $string;
     }
 
+    /**
+     * @param $string
+     * @return mixed
+     */
     private function removeSchemas($string)
     {
-        $findSchemaPattern = "('mydb'[?\.])";
+        $findSchemaPattern = "/Schema ([a-z]{1,25})/";
 
-        $string = preg_replace($findSchemaPattern, '', $string);
+        if (preg_match($findSchemaPattern, $string, $matches)) {
+            $stringSchema = $matches[1];
+
+            $findSchemaUsagesPattern = "/('?$stringSchema'?\.?)/";
+            $string = preg_replace($findSchemaUsagesPattern, '', $string);
+        }
+
+        return $string;
+    }
+
+    /**
+     * @param $string
+     * @return bool|string
+     */
+    private function removeHeaders($string)
+    {
+        $headerStart = 'DROP TABLE IF EXISTS';
+
+        $findHeader = strpos($string, $headerStart);
+
+        if ($findHeader) {
+            $string = substr($string, $findHeader);
+        }
 
         return $string;
     }
