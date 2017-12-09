@@ -37,6 +37,33 @@ class SqliteController extends Controller
     private $file_content;
 
     /**
+     * @return mixed
+     */
+    private function getFileContent()
+    {
+        return $this->file_content;
+    }
+
+    /**
+     * @param $string
+     * @return bool
+     */
+    private function setFileContent($string = '')
+    {
+        if ($string) {
+            $this->file_content = $string;
+
+            return true;
+        } elseif (!$this->getFileContent()) {
+            $this->file_content = $this->getQueryFileContent();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * This command echoes what you have entered as the message.
      * @param string $message the message to be echoed.
      */
@@ -45,21 +72,20 @@ class SqliteController extends Controller
         $this->file_path = Yii::getAlias('@app') . "/database/voteja_mysql.sql";
 
         if ($this->openQueryFile()) {
-            $mainString = $this->getQueryFileContent();
+            if ($this->setFileContent()) {
 
-            $differentQuotes = $this->replaceQuotes($mainString);
+                $this->replaceQuotes();
 
-            $noSets = $this->removeSets($differentQuotes);
+                $this->removeSchemas();
 
-            $noComments = $this->removeComments($noSets);
+                $this->removeSets();
 
-            $noSchemas = $this->removeSchemas($noComments);
+                $this->removeComments();
 
-            $noHeaders = $this->removeHeaders($noSchemas);
+                $this->removeEngines();
 
-            $noEngines = $this->removeEngines($noHeaders);
-
-            echo $noEngines;
+                echo $this->getFileContent();
+            }
 
             $this->closeQueryFile();
         }
@@ -82,9 +108,9 @@ class SqliteController extends Controller
      */
     private function getQueryFileContent()
     {
-        $this->file_content = fread($this->file_handler, filesize($this->file_path));
+        $string = fread($this->file_handler, filesize($this->file_path));
 
-        return $this->file_content;
+        return $string;
     }
 
     /**
@@ -101,87 +127,108 @@ class SqliteController extends Controller
      * @param $string
      * @return mixed
      */
-    private function replaceQuotes($string)
+    private function replaceQuotes()
     {
-        $oldQuote = '`';
-        $newQuote = "'";
+        $string = $this->getFileContent();
+        if ($string) {
+            $oldQuote = '`';
+            $newQuote = "'";
 
-        $string = str_replace($oldQuote, $newQuote, $string);
+            $string = str_replace($oldQuote, $newQuote, $string);
 
-        return $string;
+            return $this->setFileContent($string);
+        }
+
+        return false;
     }
 
     /**
      * @param $string
      * @return null|string|string[]
      */
-    private function removeSets($string)
+    private function removeSets()
     {
-        $findSetsPattern = "/(?=SET)(.*)/";
+        $string = $this->getFileContent();
 
-        $string = preg_replace($findSetsPattern, '', $string);
+        if ($string) {
+            $findSetsPattern = "/(?=SET)(.*\n?)/";
 
-        return $string;
+            $string = preg_replace($findSetsPattern, '', $string);
+
+            return $this->setFileContent($string);
+        }
+
+        return false;
     }
 
     /**
      * @param $string
      * @return null|string|string[]
      */
-    private function removeComments($string)
+    private function removeComments()
     {
-        $findCommentsPattern = "/(?=--)(.*)/";
+        $string = $this->getFileContent();
 
-        $string = preg_replace($findCommentsPattern, '', $string);
+        if ($string) {
+            $findCommentsPattern = "/(?=--)(.*\n?)/";
 
-        return $string;
+            $string = preg_replace($findCommentsPattern, '', $string);
+
+            return $this->setFileContent($string);
+        }
+
+        return false;
     }
 
     /**
      * @param $string
      * @return mixed
      */
-    private function removeSchemas($string)
+    private function removeSchemas()
     {
-        $findSchemaPattern = "/Schema ([a-z]{1,25})/";
+        $string = $this->getFileContent();
 
-        if (preg_match($findSchemaPattern, $string, $matches)) {
-            $stringSchema = $matches[1];
+        if ($string) {
+            $findSchemaPattern = "/Schema ([a-z]{1,25})/";
 
-            $findSchemaUsagesPattern = "/('?$stringSchema'?\.?)/";
-            $string = preg_replace($findSchemaUsagesPattern, '', $string);
+            if (preg_match($findSchemaPattern, $string, $matches)) {
+                $stringSchema = $matches[1];
+
+                // Remove SCHEMA CREATOR
+                $lineSchemaPattern = "/(?=CREATE SCHEMA)(.*\n?)/";
+                $string = preg_replace($lineSchemaPattern, '', $string);
+
+                // Remove SCHEMA USAGE
+                $lineSchemaPattern = "/(?=USE)(.*\n?)/";
+                $string = preg_replace($lineSchemaPattern, '', $string);
+
+                // Remove schema references
+                $findSchemaUsagesPattern = "/('?$stringSchema'?\.?)/";
+                $string = preg_replace($findSchemaUsagesPattern, '', $string);
+
+                return $this->setFileContent($string);
+            }
         }
 
-        return $string;
-    }
-
-    /**
-     * @param $string
-     * @return bool|string
-     */
-    private function removeHeaders($string)
-    {
-        $headerStart = 'DROP TABLE IF EXISTS';
-
-        $findHeader = strpos($string, $headerStart);
-
-        if ($findHeader) {
-            $string = substr($string, $findHeader);
-        }
-
-        return $string;
+        return false;
     }
 
     /**
      * @param $string
      * @return mixed
      */
-    private function removeEngines($string)
+    private function removeEngines()
     {
-        $findEnginePattern = "/\n(ENGINE).*(\w){3,8}/";
+        $string = $this->getFileContent();
 
-        $string = preg_replace($findEnginePattern, '', $string);
+        if ($string) {
+            $findEnginePattern = "/\n(ENGINE).*(\w){3,8}/";
 
-        return $string;
+            $string = preg_replace($findEnginePattern, '', $string);
+
+            return $this->setFileContent($string);
+        }
+
+        return false;
     }
 }
