@@ -76,6 +76,8 @@ class SqliteController extends Controller
 
                 $this->replaceQuotes();
 
+                $this->removeIndexes();
+
                 $this->removeSchemas();
 
                 $this->removeSets();
@@ -83,6 +85,8 @@ class SqliteController extends Controller
                 $this->removeComments();
 
                 $this->removeEngines();
+
+                $this->adaptPrimaryKeys();
 
                 echo $this->getFileContent();
             }
@@ -222,10 +226,52 @@ class SqliteController extends Controller
         $string = $this->getFileContent();
 
         if ($string) {
-            $findEnginePattern = "/\n(ENGINE).*(\w){3,8}/";
+            $findEnginePattern = "/(\)\n)(?=ENGINE).*(\w){3,8}/";
 
-            $string = preg_replace($findEnginePattern, '', $string);
+            $string = preg_replace($findEnginePattern, "\n)", $string);
 
+            return $this->setFileContent($string);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $string
+     * @return mixed
+     */
+    private function removeIndexes()
+    {
+        $string = $this->getFileContent();
+
+        if ($string) {
+            $findIndexPattern = "/(?=INDEX)(.*\n?)/";
+
+            $string = preg_replace($findIndexPattern, '', $string);
+
+            return $this->setFileContent($string);
+        }
+
+        return false;
+    }
+
+    private function adaptPrimaryKeys()
+    {
+        $string = $this->getFileContent();
+
+        if ($string) {
+            $tables = explode('DROP', $string);
+
+            foreach ($tables as $table) {
+                $findPrimaryKeyPattern = '/(?=PRIMARY).+(\((\W(\w+)\W\W?){1,3})/';
+
+                if (preg_match($findPrimaryKeyPattern, $table, $matches)) {
+                    print_r($matches);
+                    die;
+                }
+            }
+
+            die;
             return $this->setFileContent($string);
         }
 
