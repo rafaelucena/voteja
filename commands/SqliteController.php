@@ -29,7 +29,17 @@ class SqliteController extends Controller
     /**
      * @var
      */
-    private $file_handler;
+    private $file_path_new;
+
+    /**
+     * @var
+     */
+    private $file_handle;
+
+    /**
+     * @var
+     */
+    private $file_handle_new;
 
     /**
      * @var
@@ -44,6 +54,8 @@ class SqliteController extends Controller
     {
         $this->file_path = Yii::getAlias('@app') . "/database/voteja_mysql.sql";
 
+        $this->file_path_new = Yii::getAlias('@app') . "/database/voteja_sqlite.sql";
+
         if ($this->openQueryFile()) {
             if ($this->setFileContent()) {
 
@@ -51,7 +63,12 @@ class SqliteController extends Controller
 
                 $this->manipulateSections();
 
-                echo $this->getFileContent();
+                $this->openNewQueryFile();
+
+
+                fwrite($this->file_handle_new, $this->getFileContent());
+
+                fclose($this->file_handle_new);
             }
 
             $this->closeQueryFile();
@@ -65,9 +82,19 @@ class SqliteController extends Controller
      */
     private function openQueryFile()
     {
-        $this->file_handler = fopen($this->file_path, "r") or die("Unable to open file!");
+        $this->file_handle = fopen($this->file_path, "r") or die("Unable to open file!");
 
-        return $this->file_handler;
+        return $this->file_handle;
+    }
+
+    /**
+     * @return bool|resource
+     */
+    private function openNewQueryFile()
+    {
+        $this->file_handle_new = fopen($this->file_path_new, "w") or die("Unable to open file!");
+
+        return $this->file_handle_new;
     }
 
     /**
@@ -102,7 +129,7 @@ class SqliteController extends Controller
      */
     private function getQueryFileContent()
     {
-        $string = fread($this->file_handler, filesize($this->file_path));
+        $string = fread($this->file_handle, filesize($this->file_path));
 
         return $string;
     }
@@ -112,7 +139,7 @@ class SqliteController extends Controller
      */
     private function closeQueryFile()
     {
-        return fclose($this->file_handler);
+        return fclose($this->file_handle);
     }
 
     /** ============================================================================================================ **/
@@ -149,6 +176,8 @@ class SqliteController extends Controller
 
             foreach ($sections as &$section) {
                 $section = $this->adaptPrimaryKeys($section);
+
+                $section = $this->adaptTableEnding($section);
             }
 
             $string = implode('DROP', $sections);
@@ -309,6 +338,17 @@ class SqliteController extends Controller
                     $string = preg_replace($idKeyStringPattern, $idKeyStringReplacement, $string);
                 }
             }
+        }
+
+        return $string;
+    }
+
+    private function adaptTableEnding($string)
+    {
+        if ($string) {
+            $findTableEndingPattern = "/,\n(\s*)\);/";
+
+            $string = preg_replace($findTableEndingPattern, "\n);", $string);
         }
 
         return $string;
