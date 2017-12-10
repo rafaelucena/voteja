@@ -1,0 +1,285 @@
+
+
+
+
+DROP TABLE IF EXISTS 'country' ;
+
+CREATE TABLE IF NOT EXISTS 'country' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'name' VARCHAR(63) NULL,
+  'short' VARCHAR(31) NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL
+);
+
+
+DROP TABLE IF EXISTS 'state' ;
+
+CREATE TABLE IF NOT EXISTS 'state' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'country_id' INT NOT NULL,
+  'name' VARCHAR(127) NULL,
+  'short' VARCHAR(45) NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL,
+      CONSTRAINT 'fk_state_country'
+    FOREIGN KEY ('country_id')
+    REFERENCES 'country' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'person' ;
+
+CREATE TABLE IF NOT EXISTS 'person' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'name' VARCHAR(63) NULL,
+  'lastname' VARCHAR(63) NULL,
+  'short' VARCHAR(31) NULL,
+  'sex' TINYINT(1) NULL,
+  'birthday' DATE NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL
+);
+
+
+DROP TABLE IF EXISTS 'party' ;
+
+CREATE TABLE IF NOT EXISTS 'party' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'name' VARCHAR(127) NULL,
+  'short' VARCHAR(31) NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL
+);
+
+
+DROP TABLE IF EXISTS 'source' ;
+
+CREATE TABLE IF NOT EXISTS 'source' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'title' VARCHAR(63) NULL,
+  'description' VARCHAR(127) NULL,
+  'url' VARCHAR(511) NULL,
+  'when' DATETIME NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL
+);
+
+
+DROP TABLE IF EXISTS 'term' ;
+
+CREATE TABLE IF NOT EXISTS 'term' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'person_id' INT NOT NULL,
+  'from' DATE NULL,
+  'until' DATE NULL,
+  'votes' INT NULL,
+  'active' TINYINT(1) NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL,
+      CONSTRAINT 'fk_term_congressmen1'
+    FOREIGN KEY ('person_id')
+    REFERENCES 'person' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'city' ;
+
+CREATE TABLE IF NOT EXISTS 'city' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'state_id' INT NOT NULL,
+  'name' VARCHAR(127) NULL,
+  'short' VARCHAR(31) NULL,
+  'population' INT NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL,
+      CONSTRAINT 'fk_city_state1'
+    FOREIGN KEY ('state_id')
+    REFERENCES 'state' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'address' ;
+
+CREATE TABLE IF NOT EXISTS 'address' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'city_id' INT NOT NULL,
+  'street' VARCHAR(127) NULL,
+  'number' VARCHAR(7) NULL,
+  'room' VARCHAR(15) NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL,
+      CONSTRAINT 'fk_address_city1'
+    FOREIGN KEY ('city_id')
+    REFERENCES 'city' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'contact' ;
+
+CREATE TABLE IF NOT EXISTS 'contact' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'term_id' INT NOT NULL,
+  'address_id' INT NOT NULL,
+  'person_id' INT NOT NULL,
+  'active' TINYINT(1) NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL,
+          CONSTRAINT 'fk_contact_term1'
+    FOREIGN KEY ('term_id')
+    REFERENCES 'term' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_contact_address1'
+    FOREIGN KEY ('address_id')
+    REFERENCES 'address' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_contact_congressmen1'
+    FOREIGN KEY ('person_id')
+    REFERENCES 'person' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'info_type' ;
+
+CREATE TABLE IF NOT EXISTS 'info_type' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'value' VARCHAR(31) NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL
+);
+
+
+DROP TABLE IF EXISTS 'info' ;
+
+CREATE TABLE IF NOT EXISTS 'info' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'contact_id' INT NOT NULL,
+  'info_type_id' INT NOT NULL,
+  'value' VARCHAR(127) NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL,
+        CONSTRAINT 'fk_info_contact1'
+    FOREIGN KEY ('contact_id')
+    REFERENCES 'contact' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_info_info_type1'
+    FOREIGN KEY ('info_type_id')
+    REFERENCES 'info_type' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'subject' ;
+
+CREATE TABLE IF NOT EXISTS 'subject' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'title' VARCHAR(127) NULL,
+  'description' TEXT NULL,
+  'date' DATE NULL,
+  'score' INT NULL,
+  'absent' INT NULL,
+  'positive' INT NULL,
+  'negative' INT NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL
+);
+
+
+DROP TABLE IF EXISTS 'instruction' ;
+
+CREATE TABLE IF NOT EXISTS 'instruction' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'party_id' INT NOT NULL,
+  'subject_id' INT NOT NULL,
+  'mandatory' TINYINT(1) NULL,
+  'punishment' TINYINT(1) NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL,
+        CONSTRAINT 'fk_favor_party1'
+    FOREIGN KEY ('party_id')
+    REFERENCES 'party' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_favor_subject1'
+    FOREIGN KEY ('subject_id')
+    REFERENCES 'subject' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'related' ;
+
+CREATE TABLE IF NOT EXISTS 'related' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'source_id' INT NOT NULL,
+  'party_id' INT NOT NULL,
+  'instruction_id' INT NULL,
+  'subject_id' INT NULL,
+  'person_id' INT NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL,
+              CONSTRAINT 'fk_related_congressmen1'
+    FOREIGN KEY ('person_id')
+    REFERENCES 'person' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_related_party1'
+    FOREIGN KEY ('party_id')
+    REFERENCES 'party' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_related_news1'
+    FOREIGN KEY ('source_id')
+    REFERENCES 'source' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_related_subject1'
+    FOREIGN KEY ('subject_id')
+    REFERENCES 'subject' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_related_instruction1'
+    FOREIGN KEY ('instruction_id')
+    REFERENCES 'instruction' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'decision' ;
+
+CREATE TABLE IF NOT EXISTS 'decision' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'person_id' INT NOT NULL,
+  'subject_id' INT NOT NULL,
+  'in_favor' TINYINT(1) NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL,
+        CONSTRAINT 'fk_score_subject1'
+    FOREIGN KEY ('subject_id')
+    REFERENCES 'subject' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_score_person1'
+    FOREIGN KEY ('person_id')
+    REFERENCES 'person' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+

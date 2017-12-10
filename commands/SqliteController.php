@@ -65,7 +65,6 @@ class SqliteController extends Controller
 
                 $this->openNewQueryFile();
 
-
                 fwrite($this->file_handle_new, $this->getFileContent());
 
                 fclose($this->file_handle_new);
