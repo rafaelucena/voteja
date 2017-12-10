@@ -37,11 +37,37 @@ class SqliteController extends Controller
     private $file_content;
 
     /**
-     * @return mixed
+     * This command echoes what you have entered as the message.
+     * @param string $message the message to be echoed.
      */
-    private function getFileContent()
+    public function actionIndex()
     {
-        return $this->file_content;
+        $this->file_path = Yii::getAlias('@app') . "/database/voteja_mysql.sql";
+
+        if ($this->openQueryFile()) {
+            if ($this->setFileContent()) {
+
+                $this->manipulateFull();
+
+                $this->manipulateSections();
+
+                echo $this->getFileContent();
+            }
+
+            $this->closeQueryFile();
+        }
+
+        return ExitCode::OK;
+    }
+
+    /**
+     * @return bool|resource
+     */
+    private function openQueryFile()
+    {
+        $this->file_handler = fopen($this->file_path, "r") or die("Unable to open file!");
+
+        return $this->file_handler;
     }
 
     /**
@@ -64,47 +90,11 @@ class SqliteController extends Controller
     }
 
     /**
-     * This command echoes what you have entered as the message.
-     * @param string $message the message to be echoed.
+     * @return mixed
      */
-    public function actionIndex()
+    private function getFileContent()
     {
-        $this->file_path = Yii::getAlias('@app') . "/database/voteja_mysql.sql";
-
-        if ($this->openQueryFile()) {
-            if ($this->setFileContent()) {
-
-                $this->replaceQuotes();
-
-                $this->removeIndexes();
-
-                $this->removeSchemas();
-
-                $this->removeSets();
-
-                $this->removeComments();
-
-                $this->removeEngines();
-
-                $this->adaptPrimaryKeys();
-
-                echo $this->getFileContent();
-            }
-
-            $this->closeQueryFile();
-        }
-
-        return ExitCode::OK;
-    }
-
-    /**
-     * @return bool|resource
-     */
-    private function openQueryFile()
-    {
-        $this->file_handler = fopen($this->file_path, "r") or die("Unable to open file!");
-
-        return $this->file_handler;
+        return $this->file_content;
     }
 
     /**
@@ -126,6 +116,46 @@ class SqliteController extends Controller
     }
 
     /** ============================================================================================================ **/
+
+    /**
+     *
+     */
+    private function manipulateFull()
+    {
+        $this->replaceQuotes();
+
+        $this->removeIndexes();
+
+        $this->removeSchemas();
+
+        $this->removeSets();
+
+        $this->removeComments();
+
+        $this->removeEngines();
+
+        return;
+    }
+
+    /**
+     *
+     */
+    private function manipulateSections()
+    {
+        $string = $this->getFileContent();
+
+        if ($string) {
+            $sections = explode('DROP', $string);
+
+            foreach ($sections as &$section) {
+                $section = $this->adaptPrimaryKeys($section);
+            }
+
+            $string = implode('DROP', $sections);
+
+            return $this->setFileContent($string);
+        }
+    }
 
     /**
      * @param $string
@@ -255,26 +285,32 @@ class SqliteController extends Controller
         return false;
     }
 
-    private function adaptPrimaryKeys()
+    /**
+     * @param $string
+     * @return null|string|string[]
+     */
+    private function adaptPrimaryKeys($string)
     {
-        $string = $this->getFileContent();
-
         if ($string) {
-            $tables = explode('DROP', $string);
+            $findPrimaryKeyPattern = "/(?=PRIMARY).+(\(('(\w+)'\W?){1,4})\W?\n/";
 
-            foreach ($tables as $table) {
-                $findPrimaryKeyPattern = '/(?=PRIMARY).+(\((\W(\w+)\W\W?){1,3})/';
+            if (preg_match($findPrimaryKeyPattern, $string, $matches)) {
+                $keys = explode(',', $matches[1]);
 
-                if (preg_match($findPrimaryKeyPattern, $table, $matches)) {
-                    print_r($matches);
-                    die;
+                if (count($keys) > 1) {
+                    //@TODO
+                } else {
+                    $string = preg_replace($findPrimaryKeyPattern, '', $string);
+
+                    $idKeyString = $matches[3];
+                    $idKeyStringReplacement = "'$idKeyString' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT";
+                    $idKeyStringPattern = "/(?=('$idKeyString'\s)).*(\w)/";
+
+                    $string = preg_replace($idKeyStringPattern, $idKeyStringReplacement, $string);
                 }
             }
-
-            die;
-            return $this->setFileContent($string);
         }
 
-        return false;
+        return $string;
     }
 }
