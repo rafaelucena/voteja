@@ -52,9 +52,9 @@ class SqliteController extends Controller
      */
     public function actionIndex()
     {
-        $this->file_path = Yii::getAlias('@app') . "/database/voteja_mysql.sql";
+        $this->file_path = Yii::getAlias('@app') . "/database/script/voteja_mysql.sql";
 
-        $this->file_path_new = Yii::getAlias('@app') . "/database/voteja_sqlite.sql";
+        $this->file_path_new = Yii::getAlias('@app') . "/database/script/voteja_sqlite.sql";
 
         if ($this->openQueryFile()) {
             if ($this->setFileContent()) {

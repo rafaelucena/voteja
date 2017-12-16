@@ -1,0 +1,620 @@
+
+
+
+
+DROP TABLE IF EXISTS 'person' ;
+
+CREATE TABLE IF NOT EXISTS 'person' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'firstname' VARCHAR(31) NULL,
+  'lastname' VARCHAR(127) NULL,
+  'short' VARCHAR(31) NULL,
+  'sex' TINYINT(1) NULL,
+  'birthday' DATE NULL,
+  'created_by' INT NULL,
+  'updated_by' INT NULL,
+  'deleted_by' INT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+  'deleted' DATETIME NULL,
+          CONSTRAINT 'fk_person_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_person_user3'
+    FOREIGN KEY ('updated_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_person_user4'
+    FOREIGN KEY ('deleted_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'user' ;
+
+CREATE TABLE IF NOT EXISTS 'user' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'person_id' INT NOT NULL,
+  'login' VARCHAR(31) NULL,
+  'password' VARCHAR(255) NULL,
+  'token' VARCHAR(255) NULL,
+  'blocked' TINYINT(1) NULL,
+  'active' TINYINT(1) NULL,
+  'created_by' INT NULL,
+  'updated_by' INT NULL,
+  'deleted_by' INT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+  'deleted' DATETIME NULL,
+            CONSTRAINT 'fk_user_person1'
+    FOREIGN KEY ('person_id')
+    REFERENCES 'person' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_user_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_user_user2'
+    FOREIGN KEY ('updated_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_user_user3'
+    FOREIGN KEY ('deleted_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'country' ;
+
+CREATE TABLE IF NOT EXISTS 'country' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'name' VARCHAR(63) NULL,
+  'short' VARCHAR(31) NULL,
+  'created_by' INT NOT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+      CONSTRAINT 'fk_country_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'state' ;
+
+CREATE TABLE IF NOT EXISTS 'state' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'country_id' INT NOT NULL,
+  'name' VARCHAR(127) NULL,
+  'short' VARCHAR(45) NULL,
+  'created_by' INT NOT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+        CONSTRAINT 'fk_state_country'
+    FOREIGN KEY ('country_id')
+    REFERENCES 'country' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_state_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'party' ;
+
+CREATE TABLE IF NOT EXISTS 'party' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'name' VARCHAR(127) NULL,
+  'short' VARCHAR(31) NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL
+);
+
+
+DROP TABLE IF EXISTS 'source' ;
+
+CREATE TABLE IF NOT EXISTS 'source' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'title' VARCHAR(63) NULL,
+  'description' VARCHAR(127) NULL,
+  'url' VARCHAR(511) NULL,
+  'when' DATETIME NULL,
+  'active' TINYINT(1) NULL,
+  'created_by' INT NOT NULL,
+  'updated_by' INT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+  'deleted' DATETIME NULL,
+        CONSTRAINT 'fk_source_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_source_user2'
+    FOREIGN KEY ('updated_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'city' ;
+
+CREATE TABLE IF NOT EXISTS 'city' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'state_id' INT NOT NULL,
+  'name' VARCHAR(127) NULL,
+  'short' VARCHAR(31) NULL,
+  'population' INT NULL,
+  'created_by' INT NOT NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL,
+        CONSTRAINT 'fk_city_state1'
+    FOREIGN KEY ('state_id')
+    REFERENCES 'state' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_city_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'persona' ;
+
+CREATE TABLE IF NOT EXISTS 'persona' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'person_id' INT NOT NULL,
+  'party_id' INT NULL,
+  'from_id' INT NOT NULL,
+  'fullname' VARCHAR(255) NULL,
+  'nickname' VARCHAR(63) NULL,
+  'picture' VARCHAR(255) NULL,
+  'active' TINYINT(1) NULL,
+  'created_by' INT NOT NULL,
+  'updated_by' INT NOT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+              CONSTRAINT 'fk_persona_person1'
+    FOREIGN KEY ('person_id')
+    REFERENCES 'person' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_persona_party1'
+    FOREIGN KEY ('party_id')
+    REFERENCES 'party' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_persona_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_persona_user2'
+    FOREIGN KEY ('updated_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_persona_city1'
+    FOREIGN KEY ('from_id')
+    REFERENCES 'city' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'term' ;
+
+CREATE TABLE IF NOT EXISTS 'term' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'persona_id' INT NOT NULL,
+  'from' DATE NULL,
+  'until' DATE NULL,
+  'votes' INT NULL,
+  'active' TINYINT(1) NULL,
+  'created_by' INT NOT NULL,
+  'updated_by' INT NOT NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL,
+          CONSTRAINT 'fk_term_persona1'
+    FOREIGN KEY ('persona_id')
+    REFERENCES 'persona' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_term_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_term_user2'
+    FOREIGN KEY ('updated_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'address' ;
+
+CREATE TABLE IF NOT EXISTS 'address' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'city_id' INT NOT NULL,
+  'street' VARCHAR(127) NULL,
+  'number' VARCHAR(7) NULL,
+  'room' VARCHAR(15) NULL,
+  'created_by' INT NOT NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL,
+        CONSTRAINT 'fk_address_city1'
+    FOREIGN KEY ('city_id')
+    REFERENCES 'city' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_address_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'info_type' ;
+
+CREATE TABLE IF NOT EXISTS 'info_type' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'name' VARCHAR(31) NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL
+);
+
+
+DROP TABLE IF EXISTS 'info' ;
+
+CREATE TABLE IF NOT EXISTS 'info' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'person_id' INT NOT NULL,
+  'info_type_id' INT NOT NULL,
+  'value' VARCHAR(127) NULL,
+  'main' TINYINT(1) NULL,
+  'active' TINYINT(1) NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+        CONSTRAINT 'fk_info_info_type1'
+    FOREIGN KEY ('info_type_id')
+    REFERENCES 'info_type' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_info_person1'
+    FOREIGN KEY ('person_id')
+    REFERENCES 'person' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'subject' ;
+
+CREATE TABLE IF NOT EXISTS 'subject' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'title' VARCHAR(127) NULL,
+  'description' TEXT NULL,
+  'date' DATE NULL,
+  'score' INT NULL,
+  'absent' INT NULL,
+  'positive' INT NULL,
+  'negative' INT NULL,
+  'active' TINYINT(1) NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL
+);
+
+
+DROP TABLE IF EXISTS 'instruction' ;
+
+CREATE TABLE IF NOT EXISTS 'instruction' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'party_id' INT NOT NULL,
+  'subject_id' INT NOT NULL,
+  'mandatory' TINYINT(1) NULL,
+  'punishment' TINYINT(1) NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+        CONSTRAINT 'fk_favor_party1'
+    FOREIGN KEY ('party_id')
+    REFERENCES 'party' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_favor_subject1'
+    FOREIGN KEY ('subject_id')
+    REFERENCES 'subject' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'related' ;
+
+CREATE TABLE IF NOT EXISTS 'related' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'source_id' INT NOT NULL,
+  'party_id' INT NULL,
+  'instruction_id' INT NULL,
+  'subject_id' INT NULL,
+  'person_id' INT NULL,
+  'created_by' INT NOT NULL,
+  'updated_by' INT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+                  CONSTRAINT 'fk_related_congressmen1'
+    FOREIGN KEY ('person_id')
+    REFERENCES 'person' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_related_party1'
+    FOREIGN KEY ('party_id')
+    REFERENCES 'party' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_related_news1'
+    FOREIGN KEY ('source_id')
+    REFERENCES 'source' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_related_subject1'
+    FOREIGN KEY ('subject_id')
+    REFERENCES 'subject' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_related_instruction1'
+    FOREIGN KEY ('instruction_id')
+    REFERENCES 'instruction' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_related_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_related_user2'
+    FOREIGN KEY ('updated_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'decision' ;
+
+CREATE TABLE IF NOT EXISTS 'decision' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'persona_id' INT NOT NULL,
+  'subject_id' INT NOT NULL,
+  'in_favor' TINYINT(1) NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL,
+        CONSTRAINT 'fk_score_subject1'
+    FOREIGN KEY ('subject_id')
+    REFERENCES 'subject' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_decision_persona1'
+    FOREIGN KEY ('persona_id')
+    REFERENCES 'persona' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'role' ;
+
+CREATE TABLE IF NOT EXISTS 'role' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'parent_id' INT NULL,
+  'name' VARCHAR(255) NULL,
+  'constant' VARCHAR(127) NULL,
+  'description' VARCHAR(255) NULL,
+  'active' TINYINT(1) NULL,
+  'created_by' INT NOT NULL,
+  'updated_by' INT NULL,
+  'deleted_by' INT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+  'deleted' DATETIME NULL,
+            CONSTRAINT 'fk_role_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_role_user2'
+    FOREIGN KEY ('updated_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_role_role1'
+    FOREIGN KEY ('parent_id')
+    REFERENCES 'role' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_role_user3'
+    FOREIGN KEY ('deleted_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'user_role' ;
+
+CREATE TABLE IF NOT EXISTS 'user_role' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'user_id' INT NOT NULL,
+  'role_id' INT NOT NULL,
+  'active' TINYINT(1) NULL,
+  'created_by' INT NOT NULL,
+  'updated_by' INT NOT NULL,
+  'deleted_by' INT NOT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+  'deleted' DATETIME NULL,
+              CONSTRAINT 'fk_user_role_user1'
+    FOREIGN KEY ('user_id')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_user_role_role1'
+    FOREIGN KEY ('role_id')
+    REFERENCES 'role' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_user_role_user2'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_user_role_user3'
+    FOREIGN KEY ('updated_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_user_role_user4'
+    FOREIGN KEY ('deleted_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'permission' ;
+
+CREATE TABLE IF NOT EXISTS 'permission' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'parent_id' INT NULL,
+  'name' VARCHAR(255) NULL,
+  'constant' VARCHAR(127) NULL,
+  'description' VARCHAR(255) NULL,
+  'active' TINYINT(1) NULL,
+  'created_by' INT NOT NULL,
+  'updated_by' INT NULL,
+  'deleted_by' INT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+  'deleted' DATETIME NULL,
+            CONSTRAINT 'fk_permission_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_permission_user2'
+    FOREIGN KEY ('updated_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_permission_permission1'
+    FOREIGN KEY ('parent_id')
+    REFERENCES 'permission' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_permission_user3'
+    FOREIGN KEY ('deleted_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'role_permission' ;
+
+CREATE TABLE IF NOT EXISTS 'role_permission' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'permission_id' INT NOT NULL,
+  'role_id' INT NOT NULL,
+  'active' TINYINT(1) NULL,
+  'created_by' INT NOT NULL,
+  'updated_by' INT NULL,
+  'deleted_by' INT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+  'deleted' VARCHAR(45) NULL,
+              CONSTRAINT 'fk_role_permission_role1'
+    FOREIGN KEY ('role_id')
+    REFERENCES 'role' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_role_permission_permission1'
+    FOREIGN KEY ('permission_id')
+    REFERENCES 'permission' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_role_permission_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_role_permission_user2'
+    FOREIGN KEY ('updated_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_role_permission_user3'
+    FOREIGN KEY ('deleted_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'location_type' ;
+
+CREATE TABLE IF NOT EXISTS 'location_type' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'name' VARCHAR(31) NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL
+);
+
+
+DROP TABLE IF EXISTS 'locations' ;
+
+CREATE TABLE IF NOT EXISTS 'locations' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'address_id' INT NOT NULL,
+  'person_id' INT NOT NULL,
+  'location_type_id' INT NOT NULL,
+  'main' TINYINT(1) NULL,
+  'active' TINYINT(1) NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+          CONSTRAINT 'fk_locations_address1'
+    FOREIGN KEY ('address_id')
+    REFERENCES 'address' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_locations_person1'
+    FOREIGN KEY ('person_id')
+    REFERENCES 'person' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_locations_location_type1'
+    FOREIGN KEY ('location_type_id')
+    REFERENCES 'location_type' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
