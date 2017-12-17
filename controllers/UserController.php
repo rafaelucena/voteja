@@ -3,8 +3,11 @@
 namespace app\controllers;
 
 use Yii;
+
 use app\models\User;
+use app\models\Person;
 use app\models\UserSearch;
+
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -64,14 +67,16 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
-        $model = new User();
+        $userModel = new User();
+        $personModel = new Person();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($userModel->load(Yii::$app->request->post()) && $userModel->save()) {
+            return $this->redirect(['view', 'id' => $userModel->id]);
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'userModel' => $userModel,
+            'personModel' => $personModel,
         ]);
     }
 

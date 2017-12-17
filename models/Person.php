@@ -12,7 +12,7 @@ use Yii;
  * @property string $lastname
  * @property string $short
  * @property bool $sex
- * @property string $birthday
+ * @property datetime $birthday
  * @property int $created_by
  * @property int $updated_by
  * @property int $deleted_by

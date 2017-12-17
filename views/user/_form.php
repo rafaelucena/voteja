@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\User */
+/* @var $userModel app\models\User */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -12,29 +12,25 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'person_id')->textInput() ?>
+    <?= $form->field($userModel, 'username')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($userModel, 'password')->passwordInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+    <?= $form->field($userModel, 'blocked')->checkbox() ?>
 
-    <?= $form->field($model, 'token')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($userModel, 'active')->checkbox() ?>
 
-    <?= $form->field($model, 'blocked')->checkbox() ?>
+    <?= $form->field($userModel, 'created_by')->textInput() ?>
 
-    <?= $form->field($model, 'active')->checkbox() ?>
+    <?= $form->field($userModel, 'updated_by')->textInput() ?>
 
-    <?= $form->field($model, 'created_by')->textInput() ?>
+    <?= $form->field($userModel, 'deleted_by')->textInput() ?>
 
-    <?= $form->field($model, 'updated_by')->textInput() ?>
+    <?= $form->field($userModel, 'created')->textInput() ?>
 
-    <?= $form->field($model, 'deleted_by')->textInput() ?>
+    <?= $form->field($userModel, 'updated')->textInput() ?>
 
-    <?= $form->field($model, 'created')->textInput() ?>
-
-    <?= $form->field($model, 'updated')->textInput() ?>
-
-    <?= $form->field($model, 'deleted')->textInput() ?>
+    <?= $form->field($userModel, 'deleted')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
