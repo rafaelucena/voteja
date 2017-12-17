@@ -21,33 +21,11 @@ use Yii;
  * @property datetime $updated
  * @property string $deleted
  *
- * @property Address[] $addresses
- * @property City[] $cities
- * @property Country[] $countries
- * @property Permission[] $permissions
- * @property Permission[] $permissions0
- * @property Permission[] $permissions1
- * @property Person[] $people
- * @property Person[] $people0
- * @property Person[] $people1
- * @property Role[] $roles
- * @property Role[] $roles0
- * @property Role[] $roles1
- * @property RolePermission[] $rolePermissions
- * @property RolePermission[] $rolePermissions0
- * @property RolePermission[] $rolePermissions1
- * @property State[] $states
- * @property User $deletedBy
- * @property User[] $users
- * @property User $updatedBy
- * @property User[] $users0
  * @property User $createdBy
- * @property User[] $users1
+ * @property User $updatedBy
+ * @property User $deletedBy
  * @property Person $person
  * @property UserRole[] $userRoles
- * @property UserRole[] $userRoles0
- * @property UserRole[] $userRoles1
- * @property UserRole[] $userRoles2
  */
 class User extends \yii\db\ActiveRecord
 {
