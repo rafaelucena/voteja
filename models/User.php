@@ -17,8 +17,8 @@ use Yii;
  * @property int $created_by
  * @property int $updated_by
  * @property int $deleted_by
- * @property string $created
- * @property string $updated
+ * @property datetime $created
+ * @property datetime $updated
  * @property string $deleted
  *
  * @property Address[] $addresses
@@ -103,145 +103,9 @@ class User extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAddresses()
-    {
-        return $this->hasMany(Address::className(), ['created_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCities()
-    {
-        return $this->hasMany(City::className(), ['created_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCountries()
-    {
-        return $this->hasMany(Country::className(), ['created_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPermissions()
-    {
-        return $this->hasMany(Permission::className(), ['deleted_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPermissions0()
-    {
-        return $this->hasMany(Permission::className(), ['updated_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPermissions1()
-    {
-        return $this->hasMany(Permission::className(), ['created_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPeople()
-    {
-        return $this->hasMany(Person::className(), ['deleted_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPeople0()
-    {
-        return $this->hasMany(Person::className(), ['updated_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPeople1()
-    {
-        return $this->hasMany(Person::className(), ['created_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRoles()
-    {
-        return $this->hasMany(Role::className(), ['deleted_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRoles0()
-    {
-        return $this->hasMany(Role::className(), ['updated_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRoles1()
-    {
-        return $this->hasMany(Role::className(), ['created_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRolePermissions()
-    {
-        return $this->hasMany(RolePermission::className(), ['deleted_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRolePermissions0()
-    {
-        return $this->hasMany(RolePermission::className(), ['updated_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRolePermissions1()
-    {
-        return $this->hasMany(RolePermission::className(), ['created_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getStates()
-    {
-        return $this->hasMany(State::className(), ['created_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getDeletedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'deleted_by']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUsers()
-    {
-        return $this->hasMany(User::className(), ['deleted_by' => 'id']);
     }
 
     /**
@@ -255,25 +119,9 @@ class User extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsers0()
-    {
-        return $this->hasMany(User::className(), ['updated_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getCreatedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'created_by']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUsers1()
-    {
-        return $this->hasMany(User::className(), ['created_by' => 'id']);
     }
 
     /**
@@ -289,30 +137,6 @@ class User extends \yii\db\ActiveRecord
      */
     public function getUserRoles()
     {
-        return $this->hasMany(UserRole::className(), ['deleted_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUserRoles0()
-    {
-        return $this->hasMany(UserRole::className(), ['updated_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUserRoles1()
-    {
-        return $this->hasMany(UserRole::className(), ['created_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUserRoles2()
-    {
-        return $this->hasMany(UserRole::className(), ['user_id' => 'id']);
+       return $this->hasMany(UserRole::className(), ['user_id' => 'id']);
     }
 }
