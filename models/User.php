@@ -30,6 +30,11 @@ use Yii;
 class User extends \yii\db\ActiveRecord
 {
     /**
+     * @var
+     */
+    public $passwordConfirmation;
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -43,7 +48,7 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['person_id', 'created'], 'required'],
+            [['person_id', 'created','passwordConfirmation'], 'required'],
             [['person_id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['blocked', 'active'], 'boolean'],
             [['created', 'updated', 'deleted'], 'safe'],
@@ -66,6 +71,7 @@ class User extends \yii\db\ActiveRecord
             'person_id' => 'Person ID',
             'username' => 'Username',
             'password' => 'Password',
+            'passwordConfirmation' => 'Confirm password',
             'token' => 'Token',
             'blocked' => 'Blocked',
             'active' => 'Active',

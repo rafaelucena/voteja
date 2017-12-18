@@ -16,6 +16,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($userModel, 'password')->passwordInput(['maxlength' => true]) ?>
 
+    <?= $form->field($userModel, 'passwordConfirmation')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($userModel, 'blocked')->checkbox() ?>
 
     <?= $form->field($userModel, 'active')->checkbox() ?>
