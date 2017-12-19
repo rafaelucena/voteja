@@ -19,6 +19,7 @@ class LoginForm extends Model
 
     private $_user = false;
 
+    private $pepper = 'VivaLaRevolución';
 
     /**
      * @return array the validation rules.
@@ -47,10 +48,21 @@ class LoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
 
-            if (!$user || !$user->validatePassword($this->password)) {
+            if (!$user || !$user->validatePassword($this->encryptPassword($this->password))) {
                 $this->addError($attribute, 'Incorrect username or password.');
             }
         }
+    }
+
+    private function encryptPassword($password)
+    {
+        if ($password) {
+            $user = $this->getUser();
+
+            return sha1($password . '-' . $this->pepper . '-' . $user->salt);
+        }
+
+        return false;
     }
 
     /**
