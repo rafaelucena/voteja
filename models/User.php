@@ -27,7 +27,7 @@ use Yii;
  * @property Person $person
  * @property UserRole[] $userRoles
  */
-class User extends \yii\db\ActiveRecord
+class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     /**
      * @var
@@ -122,6 +122,56 @@ class User extends \yii\db\ActiveRecord
     public function getUserRoles()
     {
        return $this->hasMany(UserRole::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentity($id)
+    {
+        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        foreach (self::$users as $user) {
+            if ($user['accessToken'] === $token) {
+                return new static($user);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAuthKey()
+    {
+//        return $this->authKey;
+//        die((string)__line__);
+        return $this->salt;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function validateAuthKey($authKey)
+    {
+//        return $this->authKey === $authKey;
+//        die((string)__line__);
+        return $this->salt === $authKey;
     }
 
     /**
