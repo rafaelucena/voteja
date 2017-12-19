@@ -159,9 +159,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function getAuthKey()
     {
-//        return $this->authKey;
+        return $this->authKey;
 //        die((string)__line__);
-        return $this->salt;
+//        return $this->salt;
     }
 
     /**
@@ -169,9 +169,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-//        return $this->authKey === $authKey;
+        return $this->authKey === $authKey;
 //        die((string)__line__);
-        return $this->salt === $authKey;
+//        return $this->salt === $authKey;
     }
 
     /**
