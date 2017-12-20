@@ -129,7 +129,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return static::findOne($id);
     }
 
     /**
@@ -159,9 +159,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function getAuthKey()
     {
-        return $this->authKey;
-//        die((string)__line__);
-//        return $this->salt;
+//        return $this->authKey;
+        return $this->salt;
     }
 
     /**
@@ -169,9 +168,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-        return $this->authKey === $authKey;
-//        die((string)__line__);
-//        return $this->salt === $authKey;
+//        return $this->authKey === $authKey;
+        return $this->salt === $authKey;
     }
 
     /**
