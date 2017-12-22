@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\HistoryStatus */
 
-$this->title = 'Create History Status';
-$this->params['breadcrumbs'][] = ['label' => 'History Statuses', 'url' => ['index']];
+$this->title = 'Create';
+$this->params['breadcrumbs'][] = ['label' => 'History Status', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="history-status-create">
