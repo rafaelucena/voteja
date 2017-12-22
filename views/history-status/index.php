@@ -31,15 +31,27 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Created by',
                 'attribute' => 'createdBy.person.firstname',
+                'format' => 'raw',
                 'value' => function ($model) {
-                    return $model->createdBy ? $model->createdBy->person->firstname : null;
+                    if ($model->createdBy) {
+                        return Html::a(
+                            $model->createdBy->person->firstname,
+                            ['/person/view', 'id'=>$model->createdBy->person->id]
+                        );
+                    }
                 },
             ],
             [
                 'label' => 'Updated by',
                 'attribute' => 'updatedBy.person.firstname',
+                'format' => 'raw',
                 'value' => function ($model) {
-                    return $model->updatedBy ? $model->updatedBy->person->firstname : null;
+                    if ($model->updatedBy) {
+                        return Html::a(
+                            $model->updatedBy->person->firstname,
+                            ['/person/view', 'id'=>$model->updatedBy->person->id]
+                        );
+                    }
                 },
             ],
             'created',
