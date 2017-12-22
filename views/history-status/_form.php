@@ -9,21 +9,16 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="history-status-form">
+    <?php
+        $form = ActiveForm::begin();
 
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'active')->checkbox() ?>
-
-    <?= $form->field($model, 'created_by')->textInput() ?>
-
-    <?= $form->field($model, 'updated_by')->textInput() ?>
-
-    <?= $form->field($model, 'created')->textInput() ?>
-
-    <?= $form->field($model, 'updated')->textInput() ?>
-
+        echo $form->field($model, 'name')->textInput(['maxlength' => true]);
+        echo $form->field($model, 'active')->checkbox();
+//        echo $form->field($model, 'created_by')->textInput();
+//        echo $form->field($model, 'updated_by')->textInput();
+//        echo $form->field($model, 'created')->textInput();
+//        echo $form->field($model, 'updated')->textInput();
+    ?>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
