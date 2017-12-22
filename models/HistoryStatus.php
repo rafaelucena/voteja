@@ -15,8 +15,8 @@ use Yii;
  * @property string $created
  * @property string $updated
  *
- * @property User $updatedBy
  * @property User $createdBy
+ * @property User $updatedBy
  */
 class HistoryStatus extends \yii\db\ActiveRecord
 {
@@ -63,20 +63,21 @@ class HistoryStatus extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUpdatedBy()
-    {
-        return $this->hasOne(User::className(), ['id' => 'updated_by']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getCreatedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUpdatedBy()
+    {
+        return $this->hasOne(User::className(), ['id' => 'updated_by']);
+    }
+
+    /**
+     * @param bool $insert
      * @return bool
      */
     public function beforeSave($insert) {

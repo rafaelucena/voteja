@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\HistoryStatusSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'History Statuses';
+$this->title = 'History Status';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="history-status-index">
@@ -28,10 +28,22 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'active:boolean',
-            'created_by',
-            'updated_by',
-            //'created',
-            //'updated',
+            [
+                'label' => 'Created by',
+                'attribute' => 'createdBy.person.firstname',
+                'value' => function ($model) {
+                    return $model->createdBy ? $model->createdBy->person->firstname : null;
+                },
+            ],
+            [
+                'label' => 'Updated by',
+                'attribute' => 'updatedBy.person.firstname',
+                'value' => function ($model) {
+                    return $model->updatedBy ? $model->updatedBy->person->firstname : null;
+                },
+            ],
+            'created',
+            'updated',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
