@@ -22,7 +22,7 @@ use Yii;
  *
  * @property User $updatedBy
  * @property User $createdBy
- * @property PartyHistory[] $partyHistories
+ * @property PartyHistory[] $partyHistory
  */
 class Party extends \yii\db\ActiveRecord
 {
@@ -40,7 +40,7 @@ class Party extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'created_by', 'created'], 'required'],
+            [['code', /*'created_by', 'created'*/], 'required'],
             [['description'], 'string'],
             [['since', 'created', 'updated'], 'safe'],
             [['active'], 'boolean'],
@@ -80,7 +80,7 @@ class Party extends \yii\db\ActiveRecord
      */
     public function getUpdatedBy()
     {
-        return $this->hasOne(User::className(), ['id' => 'updated_by'])->inverseOf('parties');
+        return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
 
     /**
@@ -88,14 +88,30 @@ class Party extends \yii\db\ActiveRecord
      */
     public function getCreatedBy()
     {
-        return $this->hasOne(User::className(), ['id' => 'created_by'])->inverseOf('parties0');
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPartyHistories()
+    public function getPartyHistory()
     {
-        return $this->hasMany(PartyHistory::className(), ['party_id' => 'id'])->inverseOf('party');
+        return $this->hasMany(PartyHistory::className(), ['party_id' => 'id']);
+    }
+
+    /**
+     * @param bool $insert
+     * @return bool
+     */
+    public function beforeSave($insert) {
+        if ($insert) {
+            $this->created_by = \Yii::$app->user->identity->id;
+            $this->created = date('Y-m-d H:i:s');
+        } else {
+            $this->updated_by = \Yii::$app->user->identity->id;
+            $this->updated = date('Y-m-d H:i:s');
+        }
+
+        return parent::beforeSave($insert);
     }
 }

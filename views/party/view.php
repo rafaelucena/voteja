@@ -6,9 +6,10 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Party */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Parties', 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Party', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$this->title = 'View: ' . $this->title . ' - ' . $model->code;
 ?>
 <div class="party-view">
 

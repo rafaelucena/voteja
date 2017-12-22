@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Party */
 
-$this->title = 'Create Party';
-$this->params['breadcrumbs'][] = ['label' => 'Parties', 'url' => ['index']];
+$this->title = 'Create';
+$this->params['breadcrumbs'][] = ['label' => 'Party', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="party-create">

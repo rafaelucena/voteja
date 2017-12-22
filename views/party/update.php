@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Party */
 
-$this->title = 'Update Party: {nameAttribute}';
-$this->params['breadcrumbs'][] = ['label' => 'Parties', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => 'Party', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Update: ' . $model->id . ' - ' . $model->code;
 ?>
 <div class="party-update">
 

@@ -9,11 +9,11 @@ use yii\widgets\DetailView;
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'History Status', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-$this->title = $this->title . ' - ' . $model->name;
+$this->title = 'View: ' . $this->title . ' - ' . $model->name;
 ?>
 <div class="history-status-view">
 
-    <h1>View: <?=  Html::encode($this->title) ?></h1>
+    <h1><?=  Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>

@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\PartySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Parties';
+$this->title = 'Party';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="party-index">
