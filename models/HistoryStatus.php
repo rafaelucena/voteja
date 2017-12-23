@@ -20,6 +20,10 @@ use Yii;
  */
 class HistoryStatus extends \yii\db\ActiveRecord
 {
+    const HISTORY_STATUS_CREATED = 1;
+    const HISTORY_STATUS_UPDATED = 2;
+    const HISTORY_STATUS_DELETED = 3;
+
     /**
      * @inheritdoc
      */

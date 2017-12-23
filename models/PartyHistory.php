@@ -89,13 +89,13 @@ class PartyHistory extends \yii\db\ActiveRecord
     }
 
     /**
-     * @param bool $insert
      * @return bool
      */
-    public function beforeSave($insert) {
+    public function beforeValidate()
+    {
         $this->updated_by = \Yii::$app->user->identity->id;
         $this->updated = date('Y-m-d H:i:s');
 
-        return parent::beforeSave($insert);
+        return parent::beforeValidate();
     }
 }

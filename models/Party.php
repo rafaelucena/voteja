@@ -76,6 +76,19 @@ class Party extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return array
+     */
+    public function attributesToIgnoreHistory()
+    {
+        return [
+            'created_by',
+            'updated_by',
+            'created',
+            'updated',
+        ];
+    }
+    
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getUpdatedBy()
@@ -114,4 +127,36 @@ class Party extends \yii\db\ActiveRecord
 
         return parent::beforeSave($insert);
     }
+
+    /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        $ignoredAttributes = $this->attributesToIgnoreHistory();
+        $currentAttributes = $this->toArray();
+
+        foreach ($ignoredAttributes as $attribute) {
+            unset($changedAttributes[$attribute]);
+            unset($currentAttributes[$attribute]);
+        }
+
+        $partyHistory = new PartyHistory();
+
+        $partyHistory->party_id = $this->id;
+        $partyHistory->changed = json_encode($changedAttributes);
+        $partyHistory->current = json_encode($currentAttributes);
+
+        if ($insert) {
+            $partyHistory->history_status_id = HistoryStatus::HISTORY_STATUS_CREATED;
+        } else {
+            $partyHistory->history_status_id = HistoryStatus::HISTORY_STATUS_UPDATED;
+        }
+
+        $partyHistory->save();
+
+        return parent::afterSave($insert, $changedAttributes);
+    }
 }
+
