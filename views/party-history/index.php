@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'party_id',
             'history_status_id',
-            'changes:ntext',
+            'changed:ntext',
             'last:boolean',
             //'updated_by',
             //'updated',

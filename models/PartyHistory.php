@@ -10,7 +10,8 @@ use Yii;
  * @property int $id
  * @property int $party_id
  * @property int $history_status_id
- * @property string $changes
+ * @property string $changed
+ * @property string $current
  * @property bool $last
  * @property int $updated_by
  * @property string $updated
@@ -35,9 +36,9 @@ class PartyHistory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['party_id', 'history_status_id', 'updated_by', 'updated'], 'required'],
+            [['party_id', 'history_status_id', 'changed', 'current', 'updated_by', 'updated'], 'required'],
             [['party_id', 'history_status_id', 'updated_by'], 'integer'],
-            [['changes'], 'string'],
+            [['changed', 'current'], 'string'],
             [['last'], 'boolean'],
             [['updated'], 'safe'],
             [['history_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => HistoryStatus::className(), 'targetAttribute' => ['history_status_id' => 'id']],
@@ -55,7 +56,8 @@ class PartyHistory extends \yii\db\ActiveRecord
             'id' => 'ID',
             'party_id' => 'Party ID',
             'history_status_id' => 'History Status ID',
-            'changes' => 'Changes',
+            'changed' => 'Changed',
+            'current' => 'Current',
             'last' => 'Last',
             'updated_by' => 'Updated By',
             'updated' => 'Updated',
@@ -67,7 +69,7 @@ class PartyHistory extends \yii\db\ActiveRecord
      */
     public function getHistoryStatus()
     {
-        return $this->hasOne(HistoryStatus::className(), ['id' => 'history_status_id'])->inverseOf('partyHistories');
+        return $this->hasOne(HistoryStatus::className(), ['id' => 'history_status_id']);
     }
 
     /**
@@ -75,7 +77,7 @@ class PartyHistory extends \yii\db\ActiveRecord
      */
     public function getUpdatedBy()
     {
-        return $this->hasOne(User::className(), ['id' => 'updated_by'])->inverseOf('partyHistories');
+        return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
 
     /**
@@ -83,6 +85,17 @@ class PartyHistory extends \yii\db\ActiveRecord
      */
     public function getParty()
     {
-        return $this->hasOne(Party::className(), ['id' => 'party_id'])->inverseOf('partyHistories');
+        return $this->hasOne(Party::className(), ['id' => 'party_id']);
+    }
+
+    /**
+     * @param bool $insert
+     * @return bool
+     */
+    public function beforeSave($insert) {
+        $this->updated_by = \Yii::$app->user->identity->id;
+        $this->updated = date('Y-m-d H:i:s');
+
+        return parent::beforeSave($insert);
     }
 }

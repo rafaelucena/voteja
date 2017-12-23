@@ -19,7 +19,7 @@ class PartyHistorySearch extends PartyHistory
     {
         return [
             [['id', 'party_id', 'history_status_id', 'updated_by'], 'integer'],
-            [['changes', 'updated'], 'safe'],
+            [['changed', 'updated'], 'safe'],
             [['last'], 'boolean'],
         ];
     }
@@ -68,7 +68,7 @@ class PartyHistorySearch extends PartyHistory
             'updated' => $this->updated,
         ]);
 
-        $query->andFilterWhere(['like', 'changes', $this->changes]);
+        $query->andFilterWhere(['like', 'changed', $this->changed]);
 
         return $dataProvider;
     }

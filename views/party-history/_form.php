@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'history_status_id')->textInput() ?>
 
-    <?= $form->field($model, 'changes')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'changed')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'last')->checkbox() ?>
 

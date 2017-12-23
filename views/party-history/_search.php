@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'history_status_id') ?>
 
-    <?= $form->field($model, 'changes') ?>
+    <?= $form->field($model, 'changed') ?>
 
     <?= $form->field($model, 'last')->checkbox() ?>
 
