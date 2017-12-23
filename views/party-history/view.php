@@ -29,12 +29,47 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'party_id',
-            'history_status_id',
+            [
+                'label' => 'Party',
+                'attribute' => 'party.code',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    if ($model->party) {
+                        return Html::a(
+                            $model->party->code,
+                            ['/party/view', 'id'=>$model->party->id]
+                        );
+                    }
+                },
+            ],
+            [
+                'label' => 'Status',
+                'attribute' => 'historyStatus.name',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    if ($model->historyStatus) {
+                        return Html::a(
+                            $model->historyStatus->name,
+                            ['/history-status/view', 'id'=>$model->historyStatus->id]
+                        );
+                    }
+                },
+            ],
             'changed:ntext',
             'last:boolean',
-            'updated_by',
-            'updated',
+            [
+                'label' => 'Updated',
+                'attribute' => 'updatedBy.person.firstname',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    if ($model->updatedBy) {
+                        return $model->updated . ' | ' . Html::a(
+                            $model->updatedBy->person->firstname,
+                            ['/person/view', 'id'=>$model->updatedBy->person->id]
+                        );
+                    }
+                },
+            ],
         ],
     ]) ?>
 

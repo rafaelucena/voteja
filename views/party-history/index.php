@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\PartyHistorySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Party Histories';
+$this->title = 'Party History';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="party-history-index">
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'party_id',
             'history_status_id',
-            'changed:ntext',
+//            'changed:ntext',
             'last:boolean',
             //'updated_by',
             //'updated',
