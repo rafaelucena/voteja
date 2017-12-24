@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\PartyHistory */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Party Histories', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Party History', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="party-history-view">
@@ -56,6 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             'changed:ntext',
+            'current:ntext',
             'last:boolean',
             [
                 'label' => 'Updated',
