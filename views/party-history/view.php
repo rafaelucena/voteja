@@ -60,13 +60,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'last:boolean',
             [
                 'label' => 'Updated',
-                'attribute' => 'updatedBy.person.firstname',
+                'attribute' => 'createdBy.person.firstname',
                 'format' => 'raw',
                 'value' => function ($model) {
-                    if ($model->updatedBy) {
-                        return $model->updated . ' | ' . Html::a(
-                            $model->updatedBy->person->firstname,
-                            ['/person/view', 'id'=>$model->updatedBy->person->id]
+                    if ($model->createdBy) {
+                        return $model->created . ' | ' . Html::a(
+                            $model->createdBy->person->firstname,
+                            ['/person/view', 'id'=>$model->createdBy->person->id]
                         );
                     }
                 },

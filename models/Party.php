@@ -134,6 +134,18 @@ class Party extends \yii\db\ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
+        $this->createNewHistory($insert, $changedAttributes);
+
+        return parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * @param $insert
+     * @param $changedAttributes
+     * @return bool
+     */
+    private function createNewHistory($insert, $changedAttributes)
+    {
         $ignoredAttributes = $this->attributesToIgnoreHistory();
         $currentAttributes = $this->toArray();
 
@@ -142,11 +154,13 @@ class Party extends \yii\db\ActiveRecord
             unset($currentAttributes[$attribute]);
         }
 
+        // Model attributes zone
         $partyHistory = new PartyHistory();
 
         $partyHistory->party_id = $this->id;
         $partyHistory->changed = json_encode($changedAttributes);
         $partyHistory->current = json_encode($currentAttributes);
+        $partyHistory->last = true;
 
         if ($insert) {
             $partyHistory->history_status_id = HistoryStatus::HISTORY_STATUS_CREATED;
@@ -154,9 +168,7 @@ class Party extends \yii\db\ActiveRecord
             $partyHistory->history_status_id = HistoryStatus::HISTORY_STATUS_UPDATED;
         }
 
-        $partyHistory->save();
-
-        return parent::afterSave($insert, $changedAttributes);
+        return $partyHistory->save();
     }
 }
 

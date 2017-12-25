@@ -26,12 +26,48 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'party_id',
-            'history_status_id',
-//            'changed:ntext',
+            [
+                'label' => 'Party',
+                'attribute' => 'party.code',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    if ($model->party) {
+                        return Html::a(
+                            $model->party->code,
+                            ['/party/view', 'id'=>$model->party->id]
+                        );
+                    }
+                },
+            ],
+            [
+                'label' => 'Status',
+                'attribute' => 'historyStatus.name',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    if ($model->historyStatus) {
+                        return Html::a(
+                            $model->historyStatus->name,
+                            ['/history-status/view', 'id'=>$model->historyStatus->id]
+                        );
+                    }
+                },
+            ],
+//            'current:ntext',
+            'changed:ntext',
             'last:boolean',
-            //'updated_by',
-            //'updated',
+            [
+                'label' => 'Updated',
+                'attribute' => 'createdBy.person.firstname',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    if ($model->createdBy) {
+                        return substr($model->created, 0, 10) . ' | ' . Html::a(
+                                $model->createdBy->person->firstname,
+                                ['/person/view', 'id'=>$model->createdBy->person->id]
+                            );
+                    }
+                },
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

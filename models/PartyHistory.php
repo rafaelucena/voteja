@@ -13,11 +13,11 @@ use Yii;
  * @property string $changed
  * @property string $current
  * @property bool $last
- * @property int $updated_by
- * @property string $updated
+ * @property int $created_by
+ * @property string $created
  *
  * @property HistoryStatus $historyStatus
- * @property User $updatedBy
+ * @property User $createdBy
  * @property Party $party
  */
 class PartyHistory extends \yii\db\ActiveRecord
@@ -36,13 +36,13 @@ class PartyHistory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['party_id', 'history_status_id', 'changed', 'current', 'updated_by', 'updated'], 'required'],
-            [['party_id', 'history_status_id', 'updated_by'], 'integer'],
+            [['party_id', 'history_status_id', 'changed', 'current'/*, 'created_by', 'created'*/], 'required'],
+            [['party_id', 'history_status_id', 'created_by'], 'integer'],
             [['changed', 'current'], 'string'],
             [['last'], 'boolean'],
-            [['updated'], 'safe'],
+            [['created'], 'safe'],
             [['history_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => HistoryStatus::className(), 'targetAttribute' => ['history_status_id' => 'id']],
-            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
+            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['party_id'], 'exist', 'skipOnError' => true, 'targetClass' => Party::className(), 'targetAttribute' => ['party_id' => 'id']],
         ];
     }
@@ -59,8 +59,8 @@ class PartyHistory extends \yii\db\ActiveRecord
             'changed' => 'Changed',
             'current' => 'Current',
             'last' => 'Last',
-            'updated_by' => 'Updated By',
-            'updated' => 'Updated',
+            'created_by' => 'Updated By',
+            'created' => 'Updated',
         ];
     }
 
@@ -75,9 +75,9 @@ class PartyHistory extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUpdatedBy()
+    public function getCreatedBy()
     {
-        return $this->hasOne(User::className(), ['id' => 'updated_by']);
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
 
     /**
@@ -89,13 +89,30 @@ class PartyHistory extends \yii\db\ActiveRecord
     }
 
     /**
+     * @param bool $insert
      * @return bool
      */
-    public function beforeValidate()
-    {
-        $this->updated_by = \Yii::$app->user->identity->id;
-        $this->updated = date('Y-m-d H:i:s');
+    public function beforeSave($insert) {
+        $this->created_by = \Yii::$app->user->identity->id;
+        $this->created = date('Y-m-d H:i:s');
 
-        return parent::beforeValidate();
+        return parent::beforeSave($insert);
+    }
+
+    /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     * @throws \yii\db\Exception
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        Yii::$app->db->createCommand()->update(
+            'party_history',
+            ['last' => 0, 'created' => date('Y-m-d H:i:s')],
+            ['and', 'id != :id', 'party_id = :party_id'],
+            [':id' => $this->id, ':party_id' => $this->party_id]
+        )->execute();
+
+        return parent::afterSave($insert, $changedAttributes);
     }
 }
