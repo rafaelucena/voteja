@@ -19,7 +19,7 @@ class PartySearch extends Party
     {
         return [
             [['id', 'created_by', 'updated_by'], 'integer'],
-            [['avatar', 'name', 'short', 'code', 'description', 'since', 'created', 'updated'], 'safe'],
+            [['avatar', 'name', 'number', 'code', 'url_keys', 'description', 'since', 'until', 'created', 'updated'], 'safe'],
             [['active'], 'boolean'],
         ];
     }
@@ -62,6 +62,7 @@ class PartySearch extends Party
         $query->andFilterWhere([
             'id' => $this->id,
             'since' => $this->since,
+            'until' => $this->until,
             'active' => $this->active,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
@@ -71,8 +72,9 @@ class PartySearch extends Party
 
         $query->andFilterWhere(['like', 'avatar', $this->avatar])
             ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'short', $this->short])
+            ->andFilterWhere(['like', 'number', $this->number])
             ->andFilterWhere(['like', 'code', $this->code])
+            ->andFilterWhere(['like', 'url_keys', $this->url_keys])
             ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;

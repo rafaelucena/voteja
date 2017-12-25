@@ -32,10 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'avatar',
 //            'name',
-//            'short',
+            'number',
             'code',
+            //'url_keys:url',
             //'description:ntext',
             //'since',
+            //'until',
             //'active:boolean',
             // Created - standard-index 1.0
             [

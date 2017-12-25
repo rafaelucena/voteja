@@ -21,13 +21,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'short') ?>
+    <?= $form->field($model, 'number') ?>
 
     <?= $form->field($model, 'code') ?>
+
+    <?php // echo $form->field($model, 'url_keys') ?>
 
     <?php // echo $form->field($model, 'description') ?>
 
     <?php // echo $form->field($model, 'since') ?>
+
+    <?php // echo $form->field($model, 'until') ?>
 
     <?php // echo $form->field($model, 'active')->checkbox() ?>
 

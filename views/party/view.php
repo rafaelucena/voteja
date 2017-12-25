@@ -32,10 +32,12 @@ $this->title = 'View: ' . $this->title . ' - ' . $model->code;
             'id',
             'avatar',
             'name',
-            'short',
+            'number',
             'code',
+            'url_keys:url',
             'description:ntext',
             'since',
+            'until',
             'active:boolean',
             [
                 'label' => 'Created by',
