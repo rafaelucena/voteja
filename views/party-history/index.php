@@ -55,8 +55,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 },
             ],
-//            'current:ntext',
             'changed:ntext',
+//            'current:ntext',
+            //'active:boolean',
             'last:boolean',
             // Created - standard-index 1.0
             [
@@ -72,6 +73,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 },
             ],
+            //'updated_by',
+            //'updated',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

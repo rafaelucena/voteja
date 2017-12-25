@@ -23,11 +23,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'changed') ?>
 
-    <?= $form->field($model, 'last')->checkbox() ?>
+    <?= $form->field($model, 'current') ?>
+
+    <?php // echo $form->field($model, 'active')->checkbox() ?>
+
+    <?php // echo $form->field($model, 'last')->checkbox() ?>
 
     <?php // echo $form->field($model, 'created_by') ?>
 
+    <?php // echo $form->field($model, 'updated_by') ?>
+
     <?php // echo $form->field($model, 'created') ?>
+
+    <?php // echo $form->field($model, 'updated') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

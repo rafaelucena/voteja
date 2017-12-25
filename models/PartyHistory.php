@@ -12,13 +12,17 @@ use Yii;
  * @property int $history_status_id
  * @property string $changed
  * @property string $current
+ * @property bool $active
  * @property bool $last
  * @property int $created_by
+ * @property int $updated_by
  * @property string $created
+ * @property string $updated
  *
- * @property HistoryStatus $historyStatus
  * @property User $createdBy
+ * @property User $updatedBy
  * @property Party $party
+ * @property HistoryStatus $historyStatus
  */
 class PartyHistory extends \yii\db\ActiveRecord
 {
@@ -37,10 +41,11 @@ class PartyHistory extends \yii\db\ActiveRecord
     {
         return [
             [['party_id', 'history_status_id', 'changed', 'current'/*, 'created_by', 'created'*/], 'required'],
-            [['party_id', 'history_status_id', 'created_by'], 'integer'],
+            [['party_id', 'history_status_id', 'created_by', 'updated_by'], 'integer'],
             [['changed', 'current'], 'string'],
-            [['last'], 'boolean'],
-            [['created'], 'safe'],
+            [['active', 'last'], 'boolean'],
+            [['created', 'updated'], 'safe'],
+            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
             [['history_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => HistoryStatus::className(), 'targetAttribute' => ['history_status_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['party_id'], 'exist', 'skipOnError' => true, 'targetClass' => Party::className(), 'targetAttribute' => ['party_id' => 'id']],
@@ -58,10 +63,21 @@ class PartyHistory extends \yii\db\ActiveRecord
             'history_status_id' => 'History Status ID',
             'changed' => 'Changed',
             'current' => 'Current',
+            'active' => 'Active',
             'last' => 'Last',
-            'created_by' => 'Updated By',
-            'created' => 'Updated',
+            'created_by' => 'Created By',
+            'updated_by' => 'Updated By',
+            'created' => 'Created',
+            'updated' => 'Updated',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUpdatedBy()
+    {
+        return $this->hasOne(User::className(), ['id' => 'updated_by'])->inverseOf('partyHistoryS');
     }
 
     /**

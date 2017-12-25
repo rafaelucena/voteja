@@ -10,10 +10,12 @@ use Yii;
  * @property int $id
  * @property string $avatar
  * @property string $name
- * @property string $short
+ * @property string $number
  * @property string $code
+ * @property string $url_keys
  * @property string $description
  * @property string $since
+ * @property string $until
  * @property bool $active
  * @property int $created_by
  * @property int $updated_by
@@ -40,14 +42,14 @@ class Party extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', /*'created_by', 'created'*/], 'required'],
+            [['code', 'url_keys'/*, 'created_by', 'created'*/], 'required'],
             [['description'], 'string'],
-            [['since', 'created', 'updated'], 'safe'],
+            [['since', 'until', 'created', 'updated'], 'safe'],
             [['active'], 'boolean'],
             [['created_by', 'updated_by'], 'integer'],
             [['avatar'], 'string', 'max' => 255],
-            [['name'], 'string', 'max' => 127],
-            [['short'], 'string', 'max' => 31],
+            [['name', 'url_keys'], 'string', 'max' => 127],
+            [['number'], 'string', 'max' => 7],
             [['code'], 'string', 'max' => 15],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
@@ -63,10 +65,12 @@ class Party extends \yii\db\ActiveRecord
             'id' => 'ID',
             'avatar' => 'Avatar',
             'name' => 'Name',
-            'short' => 'Short',
+            'number' => 'Number',
             'code' => 'Code',
+            'url_keys' => 'Url Keys',
             'description' => 'Description',
             'since' => 'Since',
+            'until' => 'Until',
             'active' => 'Active',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',

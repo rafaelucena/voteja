@@ -18,11 +18,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'changed')->textarea(['rows' => 6]) ?>
 
+    <?= $form->field($model, 'current')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'active')->checkbox() ?>
+
     <?= $form->field($model, 'last')->checkbox() ?>
 
     <?= $form->field($model, 'created_by')->textInput() ?>
 
+    <?= $form->field($model, 'updated_by')->textInput() ?>
+
     <?= $form->field($model, 'created')->textInput() ?>
+
+    <?= $form->field($model, 'updated')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

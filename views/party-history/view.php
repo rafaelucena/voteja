@@ -57,6 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'changed:ntext',
             'current:ntext',
+            'active:boolean',
             'last:boolean',
             [
                 'label' => 'Created',
@@ -71,6 +72,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 },
             ],
+            'updated_by',
+            'updated',
         ],
     ]) ?>
 
