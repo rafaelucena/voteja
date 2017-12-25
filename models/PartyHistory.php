@@ -93,8 +93,11 @@ class PartyHistory extends \yii\db\ActiveRecord
      * @return bool
      */
     public function beforeSave($insert) {
-        $this->created_by = \Yii::$app->user->identity->id;
-        $this->created = date('Y-m-d H:i:s');
+        // Only update row if it's an insert
+        if ($insert) {
+            $this->created_by = \Yii::$app->user->identity->id;
+            $this->created = date('Y-m-d H:i:s');
+        }
 
         return parent::beforeSave($insert);
     }
@@ -106,12 +109,15 @@ class PartyHistory extends \yii\db\ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        Yii::$app->db->createCommand()->update(
-            'party_history',
-            ['last' => 0, 'created' => date('Y-m-d H:i:s')],
-            ['and', 'id != :id', 'party_id = :party_id'],
-            [':id' => $this->id, ':party_id' => $this->party_id]
-        )->execute();
+        if ($insert) {
+            // Remove old histories with last active for the same party ID.
+            Yii::$app->db->createCommand()->update(
+                'party_history',
+                ['last' => 0/*, 'created' => date('Y-m-d H:i:s')*/],
+                ['and', 'id != :id', 'party_id = :party_id'],
+                [':id' => $this->id, ':party_id' => $this->party_id]
+            )->execute();
+        }
 
         return parent::afterSave($insert, $changedAttributes);
     }
