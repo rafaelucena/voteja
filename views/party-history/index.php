@@ -25,7 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // Id - standard-index 1.0
+            [
+                'attribute' => 'id',
+                'headerOptions' => ['style' => 'width:50px'],
+            ],
+            // Party - standard-index 1.0
             [
                 'label' => 'Party',
                 'attribute' => 'party.code',
@@ -39,32 +44,31 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 },
             ],
+            // Status - standard-index 1.0
             [
                 'label' => 'Status',
                 'attribute' => 'historyStatus.name',
                 'format' => 'raw',
                 'value' => function ($model) {
                     if ($model->historyStatus) {
-                        return Html::a(
-                            $model->historyStatus->name,
-                            ['/history-status/view', 'id'=>$model->historyStatus->id]
-                        );
+                        return $model->historyStatus->name;
                     }
                 },
             ],
 //            'current:ntext',
             'changed:ntext',
             'last:boolean',
+            // Created - standard-index 1.0
             [
-                'label' => 'Updated',
+                'label' => 'Created',
                 'attribute' => 'createdBy.person.firstname',
                 'format' => 'raw',
                 'value' => function ($model) {
                     if ($model->createdBy) {
                         return substr($model->created, 0, 10) . ' | ' . Html::a(
-                                $model->createdBy->person->firstname,
-                                ['/person/view', 'id'=>$model->createdBy->person->id]
-                            );
+                            $model->createdBy->person->firstname,
+                            ['/person/view', 'id'=>$model->createdBy->person->id]
+                        );
                     }
                 },
             ],

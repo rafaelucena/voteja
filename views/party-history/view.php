@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'current:ntext',
             'last:boolean',
             [
-                'label' => 'Updated',
+                'label' => 'Created',
                 'attribute' => 'createdBy.person.firstname',
                 'format' => 'raw',
                 'value' => function ($model) {

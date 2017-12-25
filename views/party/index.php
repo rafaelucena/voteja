@@ -25,7 +25,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // Id - standard-index 1.0
+            [
+                'attribute' => 'id',
+                'headerOptions' => ['style' => 'width:50px'],
+            ],
             'avatar',
 //            'name',
 //            'short',
@@ -33,34 +37,34 @@ $this->params['breadcrumbs'][] = $this->title;
             //'description:ntext',
             //'since',
             //'active:boolean',
+            // Created - standard-index 1.0
             [
-                'label' => 'Created by',
+                'label' => 'Created',
                 'attribute' => 'createdBy.person.firstname',
                 'format' => 'raw',
                 'value' => function ($model) {
                     if ($model->createdBy) {
-                        return Html::a(
+                        return substr($model->created, 0, 10) . ' | ' . Html::a(
                             $model->createdBy->person->firstname,
                             ['/person/view', 'id'=>$model->createdBy->person->id]
-                        ) . ' (' . $model->created . ')';
+                        );
                     }
                 },
             ],
+            // Updated - standard-index 1.0
             [
-                'label' => 'Updated by',
+                'label' => 'Updated',
                 'attribute' => 'updatedBy.person.firstname',
                 'format' => 'raw',
                 'value' => function ($model) {
                     if ($model->updatedBy) {
-                        return Html::a(
+                        return substr($model->created, 0, 10) . ' | ' . Html::a(
                             $model->updatedBy->person->firstname,
                             ['/person/view', 'id'=>$model->updatedBy->person->id]
-                        ) . ' (' . $model->updated . ')';
+                        );
                     }
                 },
             ],
-            //'created',
-            //'updated',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
