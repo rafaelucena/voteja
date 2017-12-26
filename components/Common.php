@@ -28,6 +28,8 @@ class Common
                 $model->createdBy->person->firstname,
                 ['/person/view', 'id' => $model->createdBy->person->id]
             );
+        } else {
+            return '';
         }
     }
 
@@ -44,10 +46,7 @@ class Common
                 'format' => 'raw',
                 'value' => function ($model) {
                     if ($model->createdBy) {
-                        $html = Html::a(
-                            $model->createdBy->person->firstname,
-                            ['/person/view', 'id' => $model->createdBy->person->id]
-                        );
+                        $html = self::getHtml($model, 'created');
 
                         return $model->created . ' | ' . $html;
                     }
@@ -60,15 +59,14 @@ class Common
                 'format' => 'raw',
                 'value' => function ($model) {
                     if ($model->updatedBy) {
-                        $html = Html::a(
-                            $model->updatedBy->person->firstname,
-                            ['/person/view', 'id'=>$model->updatedBy->person->id]
-                        );
+                        $html = self::getHtml($model, 'updated');
 
                         return $model->updated . ' | ' . $html;
                     }
                 },
             ];
+        } else {
+            return '';
         }
     }
 
@@ -85,10 +83,7 @@ class Common
                 'format' => 'raw',
                 'value' => function ($model) {
                     if ($model->createdBy) {
-                        $html = Html::a(
-                            $model->createdBy->person->firstname,
-                            ['/person/view', 'id' => $model->createdBy->person->id]
-                        );
+                        $html = self::getHtml($model, 'created');
 
                         return date(self::INDEX_DATE_FORMAT, strtotime($model->created)) . ' | ' . $html;
                     }
@@ -101,15 +96,14 @@ class Common
                 'format' => 'raw',
                 'value' => function ($model) {
                     if ($model->updatedBy) {
-                        $html = Html::a(
-                            $model->updatedBy->person->firstname,
-                            ['/person/view', 'id'=>$model->updatedBy->person->id]
-                        );
+                        $html = self::getHtml($model, 'updated');
 
                         return date(self::INDEX_DATE_FORMAT, strtotime($model->updated)) . ' | ' . $html;
                     }
                 },
             ];
+        } else {
+            return '';
         }
     }
 }
