@@ -1,6 +1,8 @@
 <?php
 
+use yii\helpers\Common;
 use yii\helpers\Html;
+
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -39,34 +41,10 @@ $this->params['breadcrumbs'][] = $this->title;
             //'since',
             //'until',
             //'active:boolean',
-            // Created - standard-index 1.0
-            [
-                'label' => 'Created',
-                'attribute' => 'createdBy.person.firstname',
-                'format' => 'raw',
-                'value' => function ($model) {
-                    if ($model->createdBy) {
-                        return substr($model->created, 0, 10) . ' | ' . Html::a(
-                            $model->createdBy->person->firstname,
-                            ['/person/view', 'id'=>$model->createdBy->person->id]
-                        );
-                    }
-                },
-            ],
-            // Updated - standard-index 1.0
-            [
-                'label' => 'Updated',
-                'attribute' => 'updatedBy.person.firstname',
-                'format' => 'raw',
-                'value' => function ($model) {
-                    if ($model->updatedBy) {
-                        return substr($model->created, 0, 10) . ' | ' . Html::a(
-                            $model->updatedBy->person->firstname,
-                            ['/person/view', 'id'=>$model->updatedBy->person->id]
-                        );
-                    }
-                },
-            ],
+            // Created
+            Common::standardIndex('created'),
+            // Updated
+            Common::standardIndex('updated'),
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

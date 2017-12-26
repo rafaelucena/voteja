@@ -1,6 +1,8 @@
 <?php
 
+use yii\helpers\Common;
 use yii\helpers\Html;
+
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -39,32 +41,10 @@ $this->title = 'View: ' . $this->title . ' - ' . $model->code;
             'since',
             'until',
             'active:boolean',
-            [
-                'label' => 'Created by',
-                'attribute' => 'createdBy.person.firstname',
-                'format' => 'raw',
-                'value' => function ($model) {
-                    if ($model->createdBy) {
-                        return Html::a(
-                                $model->createdBy->person->firstname,
-                                ['/person/view', 'id'=>$model->createdBy->person->id]
-                            )  . ' (' . $model->created . ')';
-                    }
-                },
-            ],
-            [
-                'label' => 'Updated by',
-                'attribute' => 'updatedBy.person.firstname',
-                'format' => 'raw',
-                'value' => function ($model) {
-                    if ($model->updatedBy) {
-                        return Html::a(
-                                $model->updatedBy->person->firstname,
-                                ['/person/view', 'id'=>$model->updatedBy->person->id]
-                            )  . ' (' . $model->updated . ')';
-                    }
-                },
-            ],
+            // Created
+            Common::standardView('created'),
+            // Updated
+            Common::standardView('updated'),
         ],
     ]) ?>
 
