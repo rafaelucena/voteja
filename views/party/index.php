@@ -27,11 +27,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            // Id - standard-index 1.0
-            [
-                'attribute' => 'id',
-                'headerOptions' => ['style' => 'width:50px'],
-            ],
+            // Id
+            Common::standardIndex('id'),
             'avatar',
 //            'name',
             'number',
