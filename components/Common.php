@@ -28,6 +28,11 @@ class Common
                 $model->createdBy->person->firstname,
                 ['/person/view', 'id' => $model->createdBy->person->id]
             );
+        } elseif ($attribute === 'party') {
+            return Html::a(
+                $model->party->code,
+                ['/party/view', 'id'=>$model->party->id]
+            );
         } else {
             return '';
         }
@@ -76,7 +81,12 @@ class Common
      */
     public static function standardIndex($attribute)
     {
-        if ($attribute === 'created') {
+        if ($attribute === 'id') {
+            return [
+                'attribute' => 'id',
+                'headerOptions' => ['style' => 'width:50px'],
+            ];
+        } elseif ($attribute === 'created') {
             return [
                 'label' => 'Created',
                 'attribute' => 'createdBy.person.firstname',
@@ -99,6 +109,41 @@ class Common
                         $html = self::getHtml($model, 'updated');
 
                         return date(self::INDEX_DATE_FORMAT, strtotime($model->updated)) . ' | ' . $html;
+                    }
+                },
+            ];
+        } else {
+            return '';
+        }
+    }
+
+    /**
+     * @param $attribute
+     * @return array|string
+     */
+    public static function standardGlobal($attribute)
+    {
+        if ($attribute === 'status') {
+            return [
+                'label' => 'Status',
+                'attribute' => 'historyStatus.name',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    if ($model->historyStatus) {
+                        return $model->historyStatus->name;
+                    }
+                },
+            ];
+        } elseif ($attribute === 'party') {
+            return [
+                'label' => 'Party',
+                'attribute' => 'party.code',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    if ($model->party) {
+                        $html = self::getHtml($model, 'party');
+
+                        return $html;
                     }
                 },
             ];
