@@ -1,6 +1,8 @@
 <?php
 
+use yii\helpers\Common;
 use yii\helpers\Html;
+
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -25,54 +27,29 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            // Id - standard-index 1.0
+            // Id
+            Common::standardIndex('id'),
+            // Party
+            Common::standardGlobal('party'),
+            // Status
+            Common::standardGlobal('status'),
             [
-                'attribute' => 'id',
-                'headerOptions' => ['style' => 'width:50px'],
-            ],
-            // Party - standard-index 1.0
-            [
-                'label' => 'Party',
-                'attribute' => 'party.code',
-                'format' => 'raw',
+                'attribute' => 'changed',
                 'value' => function ($model) {
-                    if ($model->party) {
-                        return Html::a(
-                            $model->party->code,
-                            ['/party/view', 'id'=>$model->party->id]
-                        );
+                    if ($model->changed) {
+                        if (strlen($model->changed) > 100) {
+                            return substr($model->changed, 0, 97) . ' ... }';
+                        } else {
+                            return $model->changed;
+                        }
                     }
                 },
             ],
-            // Status - standard-index 1.0
-            [
-                'label' => 'Status',
-                'attribute' => 'historyStatus.name',
-                'format' => 'raw',
-                'value' => function ($model) {
-                    if ($model->historyStatus) {
-                        return $model->historyStatus->name;
-                    }
-                },
-            ],
-            'changed:ntext',
 //            'current:ntext',
             //'active:boolean',
             'last:boolean',
-            // Created - standard-index 1.0
-            [
-                'label' => 'Created',
-                'attribute' => 'createdBy.person.firstname',
-                'format' => 'raw',
-                'value' => function ($model) {
-                    if ($model->createdBy) {
-                        return substr($model->created, 0, 10) . ' | ' . Html::a(
-                            $model->createdBy->person->firstname,
-                            ['/person/view', 'id'=>$model->createdBy->person->id]
-                        );
-                    }
-                },
-            ],
+            // Created
+            Common::standardIndex('created'),
             //'updated_by',
             //'updated',
 
