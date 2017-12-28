@@ -1,6 +1,8 @@
 <?php
 
+use yii\helpers\Data;
 use yii\helpers\Html;
+
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -25,37 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // Id
+            Data::index('id'),
             'name',
             'active:boolean',
-            [
-                'label' => 'Created by',
-                'attribute' => 'createdBy.person.firstname',
-                'format' => 'raw',
-                'value' => function ($model) {
-                    if ($model->createdBy) {
-                        return Html::a(
-                            $model->createdBy->person->firstname,
-                            ['/person/view', 'id'=>$model->createdBy->person->id]
-                        );
-                    }
-                },
-            ],
-            [
-                'label' => 'Updated by',
-                'attribute' => 'updatedBy.person.firstname',
-                'format' => 'raw',
-                'value' => function ($model) {
-                    if ($model->updatedBy) {
-                        return Html::a(
-                            $model->updatedBy->person->firstname,
-                            ['/person/view', 'id'=>$model->updatedBy->person->id]
-                        );
-                    }
-                },
-            ],
-            'created',
-            'updated',
+            // Created
+            Data::index('created'),
+            // Updated
+            Data::index('updated'),
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

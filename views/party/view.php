@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Common;
+use yii\helpers\Data;
 use yii\helpers\Html;
 
 use yii\widgets\DetailView;
@@ -42,9 +42,9 @@ $this->title = 'View: ' . $this->title . ' - ' . $model->code;
             'until',
             'active:boolean',
             // Created
-            Common::standardView('created'),
+            Data::view('created'),
             // Updated
-            Common::standardView('updated'),
+            Data::view('updated'),
         ],
     ]) ?>
 
