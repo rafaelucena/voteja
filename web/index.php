@@ -9,7 +9,7 @@ require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 
 // Custom helpers
 Yii::$classMap['yii\helpers\Common'] = '@app/components/Common.php';
-Yii::$classMap['yii\helpers\Data'] = '@app/components/Data.php';
+Yii::$classMap['yii\helpers\Attributes'] = '@app/components/Attributes.php';
 
 $config = require __DIR__ . '/../config/web.php';
 

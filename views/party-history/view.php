@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Data;
+use yii\helpers\Attributes;
 use yii\helpers\Html;
 
 use yii\widgets\DetailView;
@@ -31,17 +31,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            Data::general('party'),
+            Attributes::general('party'),
             // Status
-            Data::general('status'),
+            Attributes::general('status'),
             'changed:ntext',
             'current:ntext',
             'active:boolean',
             'last:boolean',
             // Created
-            Data::view('created'),
+            Attributes::view('created'),
             // Updated
-            Data::view('updated'),
+            Attributes::view('updated'),
 
         ],
     ]) ?>

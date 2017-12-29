@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Data;
+use yii\helpers\Attributes;
 use yii\helpers\Html;
 
 use yii\grid\GridView;
@@ -28,11 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             // Id
-            Data::index('id'),
+            Attributes::index('id'),
             // Party
-            Data::general('party'),
+            Attributes::general('party'),
             // Status
-            Data::general('status'),
+            Attributes::general('status'),
             [
                 'attribute' => 'changed',
                 'value' => function ($model) {
@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'active:boolean',
             'last:boolean',
             // Created
-            Data::index('created'),
+            Attributes::index('created'),
             //'updated_by',
             //'updated',
 

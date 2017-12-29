@@ -2,7 +2,7 @@
 
 namespace yii\helpers;
 
-class Data extends Common
+class Attributes extends Common
 {
     /**
      *

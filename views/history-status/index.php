@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Data;
+use yii\helpers\Attributes;
 use yii\helpers\Html;
 
 use yii\grid\GridView;
@@ -28,13 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             // Id
-            Data::index('id'),
+            Attributes::index('id'),
             'name',
             'active:boolean',
             // Created
-            Data::index('created'),
+            Attributes::index('created'),
             // Updated
-            Data::index('updated'),
+            Attributes::index('updated'),
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
