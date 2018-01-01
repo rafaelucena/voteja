@@ -39,12 +39,25 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
+            [
+                'label' => 'Party',
+                'items' => [
+                    ['label' => 'Index', 'url' => ['/party/index']],
+                    ['label' => 'History', 'url' => ['/party-history/index']],
+                ],
+            ],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->identity ? (
-                ['label' => 'Gii', 'url' => ['/gii']]
+                [
+                    'label' => 'Admin',
+                    'items' => [
+                        ['label' => 'History types', 'url' => ['/history-status/index']],
+                        ['label' => 'Gii', 'url' => ['/gii']],
+                    ],
+                ]
             ) : (
-                ['label' => 'Test', 'url' => ['/site/test']]
+                []
             ),
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
