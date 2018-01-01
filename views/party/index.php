@@ -2,6 +2,7 @@
 
 use yii\helpers\Attributes;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 use yii\grid\GridView;
 
@@ -45,5 +46,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
+        'rowOptions' => function ($model) {
+            return [
+                'data-id' => $model['id']
+            ];
+        },
     ]); ?>
 </div>
+
+<?php
+$this->registerJs("
+    $('td').click(function (e) {
+        var id = $(this).closest('tr').data('id');
+        if (e.target == this) {
+            location.href = '" . Url::to(['party/display']) . "&id=' + id;
+        }
+    });
+");
+?>
