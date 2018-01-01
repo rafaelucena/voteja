@@ -6,15 +6,15 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\DetailView;
 
-/* @var $this yii\web\View */
+/* @var $this yii\web\Display */
 /* @var $model app\models\Party */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Party', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-$this->title = 'View: ' . $this->title . ' - ' . $model->code;
+$this->title = $this->title . ' - ' . $model->code;
 ?>
-<div class="party-view">
+<div class="party-display">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
