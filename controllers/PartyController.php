@@ -5,8 +5,11 @@ namespace app\controllers;
 use Yii;
 use app\models\Party;
 use app\models\PartySearch;
+use app\models\PartyHistorySearch;
+
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+
 use yii\filters\VerbFilter;
 
 /**
@@ -107,6 +110,43 @@ class PartyController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionDisplay($id)
+    {
+        $model = $this->findModel($id);
+
+        # PartyHistory
+        $partyHistorySearch = new PartyHistorySearch();
+        $partyHistoryProvider = $partyHistorySearch->search(Yii::$app->request->queryParams);
+
+        // Query
+        $partyHistoryProvider->query->where(
+            'party_id = :party_id',
+            [':party_id' => $id]
+        );
+
+        // Pagination
+        $partyHistoryProvider->setPagination([
+            'pageSize' => 5,
+        ]);
+
+        // Sort
+//        $partyHistoryProvider->setSort([
+//            'defaultOrder' => [
+//                'id' => SORT_DESC
+//            ]
+//        ]);
+
+        return $this->render('display', [
+            'model' => $model,
+            'partyHistoryProvider' => $partyHistoryProvider,
+        ]);
     }
 
     /**
