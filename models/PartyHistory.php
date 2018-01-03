@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property int $party_id
- * @property int $history_status_id
+ * @property int $history_type_id
  * @property string $changed
  * @property string $current
  * @property bool $active
@@ -22,7 +22,7 @@ use Yii;
  * @property User $createdBy
  * @property User $updatedBy
  * @property Party $party
- * @property HistoryStatus $historyStatus
+ * @property HistoryType $historyType
  */
 class PartyHistory extends \yii\db\ActiveRecord
 {
@@ -40,13 +40,13 @@ class PartyHistory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['party_id', 'history_status_id', 'changed', 'current'/*, 'created_by', 'created'*/], 'required'],
-            [['party_id', 'history_status_id', 'created_by', 'updated_by'], 'integer'],
+            [['party_id', 'history_type_id', 'changed', 'current'/*, 'created_by', 'created'*/], 'required'],
+            [['party_id', 'history_type_id', 'created_by', 'updated_by'], 'integer'],
             [['changed', 'current'], 'string'],
             [['active', 'last'], 'boolean'],
             [['created', 'updated'], 'safe'],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
-            [['history_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => HistoryStatus::className(), 'targetAttribute' => ['history_status_id' => 'id']],
+            [['history_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => HistoryType::className(), 'targetAttribute' => ['history_type_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['party_id'], 'exist', 'skipOnError' => true, 'targetClass' => Party::className(), 'targetAttribute' => ['party_id' => 'id']],
         ];
@@ -60,7 +60,7 @@ class PartyHistory extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'party_id' => 'Party ID',
-            'history_status_id' => 'History Status ID',
+            'history_type_id' => 'History Type ID',
             'changed' => 'Changed',
             'current' => 'Current',
             'active' => 'Active',
@@ -77,15 +77,15 @@ class PartyHistory extends \yii\db\ActiveRecord
      */
     public function getUpdatedBy()
     {
-        return $this->hasOne(User::className(), ['id' => 'updated_by'])->inverseOf('partyHistoryS');
+        return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getHistoryStatus()
+    public function getHistoryType()
     {
-        return $this->hasOne(HistoryStatus::className(), ['id' => 'history_status_id']);
+        return $this->hasOne(HistoryType::className(), ['id' => 'history_type_id']);
     }
 
     /**

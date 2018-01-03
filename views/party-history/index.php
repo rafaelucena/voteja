@@ -33,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             Attributes::general('party'),
             // Status
             Attributes::general('status'),
+            // Changed
             [
                 'attribute' => 'changed',
                 'value' => function ($model) {
@@ -50,8 +51,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'last:boolean',
             // Created
             Attributes::index('created'),
-            //'updated_by',
-            //'updated',
+            //'Updated',
+            //Attributes::index('updated'),
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

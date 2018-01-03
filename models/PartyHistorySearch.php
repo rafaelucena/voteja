@@ -18,7 +18,7 @@ class PartyHistorySearch extends PartyHistory
     public function rules()
     {
         return [
-            [['id', 'party_id', 'history_status_id', 'created_by', 'updated_by'], 'integer'],
+            [['id', 'party_id', 'history_type_id', 'created_by', 'updated_by'], 'integer'],
             [['changed', 'current', 'created', 'updated'], 'safe'],
             [['active', 'last'], 'boolean'],
         ];
@@ -67,7 +67,7 @@ class PartyHistorySearch extends PartyHistory
         $query->andFilterWhere([
             'id' => $this->id,
             'party_id' => $this->party_id,
-            'history_status_id' => $this->history_status_id,
+            'history_type_id' => $this->history_type_id,
             'active' => $this->active,
             'last' => $this->last,
             'created_by' => $this->created_by,

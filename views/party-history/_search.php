@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'party_id') ?>
 
-    <?= $form->field($model, 'history_status_id') ?>
+    <?= $form->field($model, 'history_type_id') ?>
 
     <?= $form->field($model, 'changed') ?>
 
