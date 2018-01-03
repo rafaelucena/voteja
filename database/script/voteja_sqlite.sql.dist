@@ -864,15 +864,15 @@ DROP TABLE IF EXISTS 'party_visit' ;
 CREATE TABLE IF NOT EXISTS 'party_visit' (
   'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   'visit_id' INT NOT NULL,
-  'party_history_id' INT NOT NULL,
+  'party_id' INT NOT NULL,
         CONSTRAINT 'fk_party_visit_visit1'
     FOREIGN KEY ('visit_id')
     REFERENCES 'visit' ('id')
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT 'fk_party_visit_party_history1'
-    FOREIGN KEY ('party_history_id')
-    REFERENCES 'party_history' ('id')
+  CONSTRAINT 'fk_party_visit_party1'
+    FOREIGN KEY ('party_id')
+    REFERENCES 'party' ('id')
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
