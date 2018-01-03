@@ -45,6 +45,8 @@ class Party extends \yii\db\ActiveRecord
             [['code', 'url_keys'/*, 'created_by', 'created'*/], 'required'],
             [['description'], 'string'],
             [['since', 'until', 'created', 'updated'], 'safe'],
+            [['since', 'until'], 'date', 'format' => 'php:Y-m-d'],
+            ['until', 'compare', 'compareAttribute' => 'since', 'operator' => '>', 'enableClientValidation' => false],
             [['active'], 'boolean'],
             [['created_by', 'updated_by'], 'integer'],
             [['avatar'], 'string', 'max' => 255],
