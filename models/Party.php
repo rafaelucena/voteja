@@ -8,11 +8,11 @@ use Yii;
  * This is the model class for table "party".
  *
  * @property int $id
- * @property string $avatar
+ * @property int $picture_id
+ * @property int $address_id
  * @property string $name
  * @property string $number
  * @property string $code
- * @property string $url_keys
  * @property string $description
  * @property string $since
  * @property string $until
@@ -22,9 +22,11 @@ use Yii;
  * @property string $created
  * @property string $updated
  *
- * @property User $updatedBy
+ * @property Address $address
  * @property User $createdBy
+ * @property User $updatedBy
  * @property PartyHistory[] $partyHistory
+ * @property PartyVisit[] $partyVisit
  */
 class Party extends \yii\db\ActiveRecord
 {
@@ -42,17 +44,17 @@ class Party extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'url_keys'/*, 'created_by', 'created'*/], 'required'],
+            [['picture_id', 'address_id', 'created_by', 'updated_by'], 'integer'],
+            [['code'/*, 'created_by', 'created'*/], 'required'],
             [['description'], 'string'],
             [['since', 'until', 'created', 'updated'], 'safe'],
             [['since', 'until'], 'date', 'format' => 'php:Y-m-d'],
             ['until', 'compare', 'compareAttribute' => 'since', 'operator' => '>', 'enableClientValidation' => false],
             [['active'], 'boolean'],
-            [['created_by', 'updated_by'], 'integer'],
-            [['avatar'], 'string', 'max' => 255],
-            [['name', 'url_keys'], 'string', 'max' => 127],
+            [['name'], 'string', 'max' => 127],
             [['number'], 'string', 'max' => 7],
             [['code'], 'string', 'max' => 15],
+            [['address_id'], 'exist', 'skipOnError' => true, 'targetClass' => Address::className(), 'targetAttribute' => ['address_id' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
         ];
@@ -65,11 +67,11 @@ class Party extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'avatar' => 'Avatar',
+            'picture_id' => 'Picture ID',
+            'address_id' => 'Address ID',
             'name' => 'Name',
             'number' => 'Number',
             'code' => 'Code',
-            'url_keys' => 'Url Keys',
             'description' => 'Description',
             'since' => 'Since',
             'until' => 'Until',
@@ -93,7 +95,15 @@ class Party extends \yii\db\ActiveRecord
             'updated',
         ];
     }
-    
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAddress()
+    {
+        return $this->hasOne(Address::className(), ['id' => 'address_id']);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -116,6 +126,14 @@ class Party extends \yii\db\ActiveRecord
     public function getPartyHistory()
     {
         return $this->hasMany(PartyHistory::className(), ['party_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPartyVisits()
+    {
+        return $this->hasMany(PartyVisit::className(), ['party_id' => 'id']);
     }
 
     /**
@@ -169,9 +187,9 @@ class Party extends \yii\db\ActiveRecord
         $partyHistory->last = true;
 
         if ($insert) {
-            $partyHistory->history_status_id = HistoryStatus::HISTORY_TYPE_CREATED;
+            $partyHistory->history_type_id = HistoryStatus::HISTORY_TYPE_CREATED;
         } else {
-            $partyHistory->history_status_id = HistoryStatus::HISTORY_TYPE_UPDATED;
+            $partyHistory->history_type_id = HistoryStatus::HISTORY_TYPE_UPDATED;
         }
 
         return $partyHistory->save();
