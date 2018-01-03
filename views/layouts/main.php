@@ -52,7 +52,7 @@ AppAsset::register($this);
                 [
                     'label' => 'Admin',
                     'items' => [
-                        ['label' => 'History types', 'url' => ['/history-status/index']],
+                        ['label' => 'History types', 'url' => ['/history-type/index']],
                         ['label' => 'Gii', 'url' => ['/gii']],
                     ],
                 ]

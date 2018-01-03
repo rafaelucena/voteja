@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\HistoryStatus;
-use app\models\HistoryStatusSearch;
+use app\models\HistoryType;
+use app\models\HistoryTypeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * HistoryStatusController implements the CRUD actions for HistoryStatus model.
+ * HistoryTypeController implements the CRUD actions for HistoryType model.
  */
-class HistoryStatusController extends Controller
+class HistoryTypeController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class HistoryStatusController extends Controller
     }
 
     /**
-     * Lists all HistoryStatus models.
+     * Lists all HistoryType models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new HistoryStatusSearch();
+        $searchModel = new HistoryTypeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class HistoryStatusController extends Controller
     }
 
     /**
-     * Displays a single HistoryStatus model.
+     * Displays a single HistoryType model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,13 +58,13 @@ class HistoryStatusController extends Controller
     }
 
     /**
-     * Creates a new HistoryStatus model.
+     * Creates a new HistoryType model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new HistoryStatus();
+        $model = new HistoryType();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -76,7 +76,7 @@ class HistoryStatusController extends Controller
     }
 
     /**
-     * Updates an existing HistoryStatus model.
+     * Updates an existing HistoryType model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -96,7 +96,7 @@ class HistoryStatusController extends Controller
     }
 
     /**
-     * Deletes an existing HistoryStatus model.
+     * Deletes an existing HistoryType model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,15 +110,15 @@ class HistoryStatusController extends Controller
     }
 
     /**
-     * Finds the HistoryStatus model based on its primary key value.
+     * Finds the HistoryType model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return HistoryStatus the loaded model
+     * @return HistoryType the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = HistoryStatus::findOne($id)) !== null) {
+        if (($model = HistoryType::findOne($id)) !== null) {
             return $model;
         }
 

@@ -6,19 +6,19 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\HistoryStatusSearch */
+/* @var $searchModel app\models\HistoryTypeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'History Status';
+$this->title = 'History Type';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="history-status-index">
+<div class="history-type-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create History Status', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create History Type', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([

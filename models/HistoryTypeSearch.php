@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\HistoryStatus;
+use app\models\HistoryType;
 
 /**
- * HistoryStatusSearch represents the model behind the search form of `app\models\HistoryStatus`.
+ * HistoryTypeSearch represents the model behind the search form of `app\models\HistoryType`.
  */
-class HistoryStatusSearch extends HistoryStatus
+class HistoryTypeSearch extends HistoryType
 {
     /**
      * @inheritdoc
@@ -42,7 +42,7 @@ class HistoryStatusSearch extends HistoryStatus
      */
     public function search($params)
     {
-        $query = HistoryStatus::find();
+        $query = HistoryType::find();
 
         // add conditions that should always apply here
 

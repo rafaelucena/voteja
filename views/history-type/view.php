@@ -6,16 +6,16 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\HistoryStatus */
+/* @var $model app\models\HistoryType */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'History Status', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'History Type', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $this->title = 'View: ' . $this->title . ' - ' . $model->name;
 ?>
-<div class="history-status-view">
+<div class="history-type-view">
 
-    <h1><?=  Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>

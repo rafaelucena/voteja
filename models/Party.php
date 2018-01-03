@@ -169,9 +169,9 @@ class Party extends \yii\db\ActiveRecord
         $partyHistory->last = true;
 
         if ($insert) {
-            $partyHistory->history_status_id = HistoryStatus::HISTORY_STATUS_CREATED;
+            $partyHistory->history_status_id = HistoryStatus::HISTORY_TYPE_CREATED;
         } else {
-            $partyHistory->history_status_id = HistoryStatus::HISTORY_STATUS_UPDATED;
+            $partyHistory->history_status_id = HistoryStatus::HISTORY_TYPE_UPDATED;
         }
 
         return $partyHistory->save();

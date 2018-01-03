@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "history_status".
+ * This is the model class for table "history_type".
  *
  * @property int $id
  * @property string $name
@@ -18,18 +18,18 @@ use Yii;
  * @property User $createdBy
  * @property User $updatedBy
  */
-class HistoryStatus extends \yii\db\ActiveRecord
+class HistoryType extends \yii\db\ActiveRecord
 {
-    const HISTORY_STATUS_CREATED = 1;
-    const HISTORY_STATUS_UPDATED = 2;
-    const HISTORY_STATUS_DELETED = 3;
+    const HISTORY_TYPE_CREATED = 1;
+    const HISTORY_TYPE_UPDATED = 2;
+    const HISTORY_TYPE_DELETED = 3;
 
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'history_status';
+        return 'history_type';
     }
 
     /**
@@ -38,8 +38,8 @@ class HistoryStatus extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['name'/*, 'created_by', 'created'*/], 'required'],
             [['active'], 'boolean'],
-//            [['created_by', 'created'], 'required'],
             [['created_by', 'updated_by'], 'integer'],
             [['created', 'updated'], 'safe'],
             [['name'], 'string', 'max' => 31],
