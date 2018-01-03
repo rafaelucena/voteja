@@ -124,15 +124,121 @@ CREATE TABLE IF NOT EXISTS 'state' (
 );
 
 
+DROP TABLE IF EXISTS 'picture_type' ;
+
+CREATE TABLE IF NOT EXISTS 'picture_type' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'name' VARCHAR(31) NOT NULL,
+  'active' TINYINT(1) NULL,
+  'created_by' INT NOT NULL,
+  'updated_by' INT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+        CONSTRAINT 'fk_picture_type_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_picture_type_user2'
+    FOREIGN KEY ('updated_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'picture' ;
+
+CREATE TABLE IF NOT EXISTS 'picture' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'picture_type_id' INT NOT NULL,
+  'name' VARCHAR(255) NOT NULL,
+  'local' VARCHAR(255) NULL,
+  'extension' VARCHAR(15) NULL,
+  'alt' VARCHAR(127) NULL,
+  'size' INT NULL,
+  'active' TINYINT(1) NULL,
+  'hash' VARCHAR(255) NULL,
+  'created_by' INT NOT NULL,
+  'updated_by' INT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+          CONSTRAINT 'fk_picture_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_picture_user2'
+    FOREIGN KEY ('updated_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_picture_picture_type1'
+    FOREIGN KEY ('picture_type_id')
+    REFERENCES 'picture_type' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'city' ;
+
+CREATE TABLE IF NOT EXISTS 'city' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'state_id' INT NOT NULL,
+  'name' VARCHAR(127) NULL,
+  'short' VARCHAR(31) NULL,
+  'code' VARCHAR(3) NULL,
+  'population' INT NULL,
+  'created_by' INT NOT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+        CONSTRAINT 'fk_city_state1'
+    FOREIGN KEY ('state_id')
+    REFERENCES 'state' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_city_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'address' ;
+
+CREATE TABLE IF NOT EXISTS 'address' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'city_id' INT NOT NULL,
+  'street' VARCHAR(127) NULL,
+  'number' VARCHAR(7) NULL,
+  'room' VARCHAR(15) NULL,
+  'created_by' INT NOT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+        CONSTRAINT 'fk_address_city1'
+    FOREIGN KEY ('city_id')
+    REFERENCES 'city' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_address_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
 DROP TABLE IF EXISTS 'party' ;
 
 CREATE TABLE IF NOT EXISTS 'party' (
   'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  'avatar' VARCHAR(255) NULL,
+  'picture_id' INT NULL,
+  'address_id' INT NULL,
   'name' VARCHAR(127) NULL,
   'number' VARCHAR(7) NULL,
   'code' VARCHAR(15) NOT NULL,
-  'url_keys' VARCHAR(127) NOT NULL,
   'description' TEXT NULL,
   'since' DATE NULL,
   'until' DATE NULL,
@@ -141,7 +247,7 @@ CREATE TABLE IF NOT EXISTS 'party' (
   'updated_by' INT NULL,
   'created' DATETIME NOT NULL,
   'updated' DATETIME NULL,
-        CONSTRAINT 'fk_party_user1'
+            CONSTRAINT 'fk_party_user1'
     FOREIGN KEY ('created_by')
     REFERENCES 'user' ('id')
     ON DELETE NO ACTION
@@ -149,6 +255,16 @@ CREATE TABLE IF NOT EXISTS 'party' (
   CONSTRAINT 'fk_party_user2'
     FOREIGN KEY ('updated_by')
     REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_party_picture1'
+    FOREIGN KEY ('picture_id')
+    REFERENCES 'picture' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_party_address1'
+    FOREIGN KEY ('address_id')
+    REFERENCES 'address' ('id')
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
@@ -175,31 +291,6 @@ CREATE TABLE IF NOT EXISTS 'source' (
     ON UPDATE NO ACTION,
   CONSTRAINT 'fk_source_user2'
     FOREIGN KEY ('updated_by')
-    REFERENCES 'user' ('id')
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
-
-
-DROP TABLE IF EXISTS 'city' ;
-
-CREATE TABLE IF NOT EXISTS 'city' (
-  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  'state_id' INT NOT NULL,
-  'name' VARCHAR(127) NULL,
-  'short' VARCHAR(31) NULL,
-  'code' VARCHAR(3) NULL,
-  'population' INT NULL,
-  'created_by' INT NOT NULL,
-  'created' DATETIME NOT NULL,
-  'updated' DATETIME NULL,
-        CONSTRAINT 'fk_city_state1'
-    FOREIGN KEY ('state_id')
-    REFERENCES 'state' ('id')
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT 'fk_city_user1'
-    FOREIGN KEY ('created_by')
     REFERENCES 'user' ('id')
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
@@ -274,30 +365,6 @@ CREATE TABLE IF NOT EXISTS 'term' (
     ON UPDATE NO ACTION,
   CONSTRAINT 'fk_term_user2'
     FOREIGN KEY ('updated_by')
-    REFERENCES 'user' ('id')
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
-
-
-DROP TABLE IF EXISTS 'address' ;
-
-CREATE TABLE IF NOT EXISTS 'address' (
-  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  'city_id' INT NOT NULL,
-  'street' VARCHAR(127) NULL,
-  'number' VARCHAR(7) NULL,
-  'room' VARCHAR(15) NULL,
-  'created_by' INT NOT NULL,
-  'created' DATETIME NOT NULL,
-  'updated' DATETIME NULL,
-        CONSTRAINT 'fk_address_city1'
-    FOREIGN KEY ('city_id')
-    REFERENCES 'city' ('id')
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT 'fk_address_user1'
-    FOREIGN KEY ('created_by')
     REFERENCES 'user' ('id')
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
@@ -648,11 +715,11 @@ CREATE TABLE IF NOT EXISTS 'locations' (
 );
 
 
-DROP TABLE IF EXISTS 'history_status' ;
+DROP TABLE IF EXISTS 'history_type' ;
 
-CREATE TABLE IF NOT EXISTS 'history_status' (
+CREATE TABLE IF NOT EXISTS 'history_type' (
   'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  'name' VARCHAR(31) NULL,
+  'name' VARCHAR(31) NOT NULL,
   'active' TINYINT(1) NULL,
   'created_by' INT NOT NULL,
   'updated_by' INT NULL,
@@ -676,7 +743,7 @@ DROP TABLE IF EXISTS 'party_history' ;
 CREATE TABLE IF NOT EXISTS 'party_history' (
   'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   'party_id' INT NOT NULL,
-  'history_status_id' INT NOT NULL,
+  'history_type_id' INT NOT NULL,
   'changed' TEXT NOT NULL,
   'current' TEXT NOT NULL,
   'active' TINYINT(1) NULL,
@@ -696,13 +763,116 @@ CREATE TABLE IF NOT EXISTS 'party_history' (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT 'fk_party_history_history_status1'
-    FOREIGN KEY ('history_status_id')
-    REFERENCES 'history_status' ('id')
+    FOREIGN KEY ('history_type_id')
+    REFERENCES 'history_type' ('id')
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT 'fk_party_history_user2'
     FOREIGN KEY ('updated_by')
     REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'tag' ;
+
+CREATE TABLE IF NOT EXISTS 'tag' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'name' VARCHAR(31) NOT NULL,
+  'active' TINYINT(1) NULL,
+  'url' TINYINT(1) NULL,
+  'created' DATETIME NULL,
+  'updated' DATETIME NULL,
+    UNIQUE ENGINE = InnoDB;
+
+
+DROP TABLE IF EXISTS 'party_tag' ;
+
+CREATE TABLE IF NOT EXISTS 'party_tag' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'party_id' INT NOT NULL,
+  'tag_id' INT NOT NULL,
+  'created_by' INT NOT NULL,
+  'updated_by' INT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+            CONSTRAINT 'fk_party_tag_party1'
+    FOREIGN KEY ('party_id')
+    REFERENCES 'party' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_party_tag_tag1'
+    FOREIGN KEY ('tag_id')
+    REFERENCES 'tag' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_party_tag_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_party_tag_user2'
+    FOREIGN KEY ('updated_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'visit_type' ;
+
+CREATE TABLE IF NOT EXISTS 'visit_type' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'name' VARCHAR(127) NOT NULL,
+  'active' TINYINT(1) NULL,
+  'created_by' INT NOT NULL,
+  'updated_by' INT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+        CONSTRAINT 'fk_visit_type_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_visit_type_user2'
+    FOREIGN KEY ('updated_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'visit' ;
+
+CREATE TABLE IF NOT EXISTS 'visit' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'visit_type_id' INT NOT NULL,
+  'count' INT NOT NULL,
+  'date' DATE NOT NULL,
+  'last' DATETIME NOT NULL,
+      CONSTRAINT 'fk_visit_visit_type1'
+    FOREIGN KEY ('visit_type_id')
+    REFERENCES 'visit_type' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'party_visit' ;
+
+CREATE TABLE IF NOT EXISTS 'party_visit' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'visit_id' INT NOT NULL,
+  'party_history_id' INT NOT NULL,
+        CONSTRAINT 'fk_party_visit_visit1'
+    FOREIGN KEY ('visit_id')
+    REFERENCES 'visit' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_party_visit_party_history1'
+    FOREIGN KEY ('party_history_id')
+    REFERENCES 'party_history' ('id')
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
