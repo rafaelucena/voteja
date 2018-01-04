@@ -32,11 +32,11 @@ $this->title = 'View: ' . $this->title . ' - ' . $model->code;
         'model' => $model,
         'attributes' => [
             'id',
-            'avatar',
+            'picture_id',
+            'address_id',
             'name',
             'number',
             'code',
-            'url_keys:url',
             'description:ntext',
             'since',
             'until',

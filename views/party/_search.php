@@ -17,15 +17,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'avatar') ?>
+    <?= $form->field($model, 'picture_id') ?>
+
+    <?= $form->field($model, 'address_id') ?>
 
     <?= $form->field($model, 'name') ?>
 
     <?= $form->field($model, 'number') ?>
 
     <?= $form->field($model, 'code') ?>
-
-    <?php // echo $form->field($model, 'url_keys') ?>
 
     <?php // echo $form->field($model, 'description') ?>
 
@@ -34,14 +34,6 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'until') ?>
 
     <?php // echo $form->field($model, 'active')->checkbox() ?>
-
-    <?php // echo $form->field($model, 'created_by') ?>
-
-    <?php // echo $form->field($model, 'updated_by') ?>
-
-    <?php // echo $form->field($model, 'created') ?>
-
-    <?php // echo $form->field($model, 'updated') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

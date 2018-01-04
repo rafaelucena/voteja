@@ -30,11 +30,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
             // Id
             Attributes::index('id'),
-            'avatar',
-//            'name',
+            'picture_id',
+            'address_id',
+            //'name',
             'number',
             'code',
-            //'url_keys:url',
             //'description:ntext',
             //'since',
             //'until',

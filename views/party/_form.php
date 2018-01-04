@@ -12,15 +12,15 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'avatar')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'picture_id')->textInput() ?>
+
+    <?php //echo $form->field($model, 'address_id')->textInput() ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'number')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'url_keys')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
@@ -29,14 +29,6 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'until')->textInput() ?>
 
     <?= $form->field($model, 'active')->checkbox() ?>
-
-    <?php //echo $form->field($model, 'created_by')->textInput() ?>
-
-    <?php //echo $form->field($model, 'updated_by')->textInput() ?>
-
-    <?php //echo $form->field($model, 'created')->textInput() ?>
-
-    <?php //echo $form->field($model, 'updated')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

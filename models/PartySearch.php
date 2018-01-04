@@ -18,8 +18,8 @@ class PartySearch extends Party
     public function rules()
     {
         return [
-            [['id', 'created_by', 'updated_by'], 'integer'],
-            [['avatar', 'name', 'number', 'code', 'url_keys', 'description', 'since', 'until', 'created', 'updated'], 'safe'],
+            [['id', 'picture_id', 'address_id', 'created_by', 'updated_by'], 'integer'],
+            [['name', 'number', 'code', 'description', 'since', 'until', 'created', 'updated'], 'safe'],
             [['active'], 'boolean'],
         ];
     }
@@ -61,6 +61,8 @@ class PartySearch extends Party
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'picture_id' => $this->picture_id,
+            'address_id' => $this->address_id,
             'since' => $this->since,
             'until' => $this->until,
             'active' => $this->active,
@@ -70,11 +72,9 @@ class PartySearch extends Party
             'updated' => $this->updated,
         ]);
 
-        $query->andFilterWhere(['like', 'avatar', $this->avatar])
-            ->andFilterWhere(['like', 'name', $this->name])
+        $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'number', $this->number])
             ->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'url_keys', $this->url_keys])
             ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;

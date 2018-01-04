@@ -33,11 +33,9 @@ $this->title = $this->title . ' - ' . $model->code;
         'model' => $model,
         'attributes' => [
             'id',
-            'avatar',
             'name',
             'number',
             'code',
-            'url_keys:url',
             'description:ntext',
             'since',
             'until',
