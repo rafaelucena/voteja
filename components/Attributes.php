@@ -146,11 +146,11 @@ class Attributes extends Common
             case 'status':
                 $output = [
                     'label' => 'Status',
-                    'attribute' => 'historyStatus.name',
+                    'attribute' => 'historyType.name',
                     'format' => 'raw',
                     'value' => function ($model) {
-                        if ($model->historyStatus) {
-                            return $model->historyStatus->name;
+                        if ($model->historyType) {
+                            return $model->historyType->name;
                         }
                     },
                 ];
