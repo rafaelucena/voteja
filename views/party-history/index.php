@@ -34,18 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // Status
             Attributes::general('status'),
             // Changed
-            [
-                'attribute' => 'changed',
-                'value' => function ($model) {
-                    if ($model->changed) {
-                        if (strlen($model->changed) > 100) {
-                            return substr($model->changed, 0, 97) . ' ... }';
-                        } else {
-                            return $model->changed;
-                        }
-                    }
-                },
-            ],
+            Attributes::general('changed'),
 //            'current:ntext',
             //'active:boolean',
             'last:boolean',

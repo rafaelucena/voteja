@@ -143,6 +143,23 @@ class Attributes extends Common
         $output = null;
 
         switch ($attribute) {
+            case 'changed':
+                $output = [
+                    'attribute' => 'changed',
+                    'value' => function ($model) {
+                        if ($model->changed) {
+                            $changes = json_decode($model->changed, 1);
+
+                            $labels = array();
+                            foreach ($changes as $label => $change) {
+                                $labels[] = $label;
+                            }
+
+                            return implode(' | ', $labels);
+                        }
+                    },
+                ];
+                break;
             case 'status':
                 $output = [
                     'label' => 'Status',
