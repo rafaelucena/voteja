@@ -17,8 +17,8 @@ use Yii;
  * @property string $updated
 
  * Relations section
- * @property User $updatedBy
  * @property User $createdBy
+ * @property User $updatedBy
  */
 class PictureType extends \yii\db\ActiveRecord
 {
@@ -65,17 +65,17 @@ class PictureType extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUpdatedBy()
+    public function getCreatedBy()
     {
-        return $this->hasOne(User::className(), ['id' => 'updated_by']);
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCreatedBy()
+    public function getUpdatedBy()
     {
-        return $this->hasOne(User::className(), ['id' => 'created_by']);
+        return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
 
     /**

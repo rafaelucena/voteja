@@ -6,7 +6,8 @@ use Yii;
 
 /**
  * This is the model class for table "picture".
- *
+
+ * Attributes section
  * @property int $id
  * @property int $picture_type_id
  * @property string $name
@@ -20,11 +21,11 @@ use Yii;
  * @property int $updated_by
  * @property string $created
  * @property string $updated
- *
- * @property Party[] $parties
+
+ * Relations section
  * @property PictureType $pictureType
- * @property User $updatedBy
  * @property User $createdBy
+ * @property User $updatedBy
  */
 class Picture extends \yii\db\ActiveRecord
 {
@@ -42,7 +43,7 @@ class Picture extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['picture_type_id', 'name', 'created_by', 'created'], 'required'],
+            [['picture_type_id', 'name'/*, 'created_by', 'created'*/], 'required'],
             [['picture_type_id', 'size', 'created_by', 'updated_by'], 'integer'],
             [['active'], 'boolean'],
             [['created', 'updated'], 'safe'],
@@ -50,8 +51,8 @@ class Picture extends \yii\db\ActiveRecord
             [['extension'], 'string', 'max' => 15],
             [['alt'], 'string', 'max' => 127],
             [['picture_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => PictureType::className(), 'targetAttribute' => ['picture_type_id' => 'id']],
-            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
+            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
         ];
     }
 
@@ -80,14 +81,6 @@ class Picture extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getParties()
-    {
-        return $this->hasMany(Party::className(), ['picture_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getPictureType()
     {
         return $this->hasOne(PictureType::className(), ['id' => 'picture_type_id']);
@@ -96,16 +89,16 @@ class Picture extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUpdatedBy()
+    public function getCreatedBy()
     {
-        return $this->hasOne(User::className(), ['id' => 'updated_by']);
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCreatedBy()
+    public function getUpdatedBy()
     {
-        return $this->hasOne(User::className(), ['id' => 'created_by']);
+        return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
 }

@@ -1,13 +1,15 @@
 <?php
 
+use yii\helpers\Attributes;
 use yii\helpers\Html;
+
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PictureSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Pictures';
+$this->title = 'Picture';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="picture-index">
@@ -25,7 +27,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // Id
+            Attributes::index('id'),
             'picture_type_id',
             'name',
             'local',
@@ -34,10 +37,10 @@ $this->params['breadcrumbs'][] = $this->title;
             //'size',
             //'active:boolean',
             //'hash',
-            //'created_by',
-            //'updated_by',
-            //'created',
-            //'updated',
+            // Created
+            Attributes::index('created'),
+            // Updated
+            Attributes::index('updated'),
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

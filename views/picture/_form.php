@@ -18,23 +18,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'local')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'extension')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'alt')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'size')->textInput() ?>
-
     <?= $form->field($model, 'active')->checkbox() ?>
-
-    <?= $form->field($model, 'hash')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'created_by')->textInput() ?>
-
-    <?= $form->field($model, 'updated_by')->textInput() ?>
-
-    <?= $form->field($model, 'created')->textInput() ?>
-
-    <?= $form->field($model, 'updated')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

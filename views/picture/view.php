@@ -1,14 +1,17 @@
 <?php
 
+use yii\helpers\Attributes;
 use yii\helpers\Html;
+
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Picture */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Pictures', 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Picture', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$this->title = 'View: ' . $this->title . ' - ' . $model->name;
 ?>
 <div class="picture-view">
 
@@ -37,10 +40,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'size',
             'active:boolean',
             'hash',
-            'created_by',
-            'updated_by',
-            'created',
-            'updated',
+            // Created
+            Attributes::view('created'),
+            // Updated
+            Attributes::view('updated'),
         ],
     ]) ?>
 
