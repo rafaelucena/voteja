@@ -2,6 +2,7 @@
 
 use yii\helpers\Attributes;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 use yii\widgets\DetailView;
 
@@ -28,10 +29,24 @@ $this->title = 'View: ' . $this->title . ' - ' . $model->name;
         ]) ?>
     </p>
 
+    <?php
+        echo Html::img('@web/images/party/pmdb.jpg');
+    ?>
+
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
+            [
+                'label' => '',
+                'attribute' => 'image',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    $fileName = $model->image = implode('.', [$model->name, $model->extension]);
+
+                    return Html::img("@web/images/party/$fileName");
+                },
+            ],
             'picture_type_id',
             'name',
             'local',

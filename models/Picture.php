@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use function GuzzleHttp\Psr7\mimetype_from_filename;
+use yii\helpers\Url;
 use Yii;
 
 /**
@@ -11,7 +13,6 @@ use Yii;
  * @property int $id
  * @property int $picture_type_id
  * @property string $name
- * @property string $local
  * @property string $extension
  * @property string $alt
  * @property int $size
@@ -21,6 +22,7 @@ use Yii;
  * @property int $updated_by
  * @property string $created
  * @property string $updated
+ * @property string $checked
 
  * Relations section
  * @property PictureType $pictureType
@@ -29,6 +31,8 @@ use Yii;
  */
 class Picture extends \yii\db\ActiveRecord
 {
+    public $image;
+
     /**
      * @inheritdoc
      */
@@ -46,8 +50,8 @@ class Picture extends \yii\db\ActiveRecord
             [['picture_type_id', 'name'/*, 'created_by', 'created'*/], 'required'],
             [['picture_type_id', 'size', 'created_by', 'updated_by'], 'integer'],
             [['active'], 'boolean'],
-            [['created', 'updated'], 'safe'],
-            [['name', 'local', 'hash'], 'string', 'max' => 255],
+            [['created', 'updated', 'checked'], 'safe'],
+            [['name', 'hash'], 'string', 'max' => 255],
             [['extension'], 'string', 'max' => 15],
             [['alt'], 'string', 'max' => 127],
             [['picture_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => PictureType::className(), 'targetAttribute' => ['picture_type_id' => 'id']],
@@ -65,7 +69,6 @@ class Picture extends \yii\db\ActiveRecord
             'id' => 'ID',
             'picture_type_id' => 'Picture Type ID',
             'name' => 'Name',
-            'local' => 'Local',
             'extension' => 'Extension',
             'alt' => 'Alt',
             'size' => 'Size',
@@ -75,6 +78,7 @@ class Picture extends \yii\db\ActiveRecord
             'updated_by' => 'Updated By',
             'created' => 'Created',
             'updated' => 'Updated',
+            'Checked' => 'Checked',
         ];
     }
 
@@ -100,5 +104,65 @@ class Picture extends \yii\db\ActiveRecord
     public function getUpdatedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
+    }
+
+    /**
+     * @param bool $insert
+     * @return bool
+     */
+    public function beforeSave($insert) {
+        if ($insert) {
+            $this->created_by = \Yii::$app->user->identity->id;
+            $this->created = date('Y-m-d H:i:s');
+        } else {
+            $this->updated_by = \Yii::$app->user->identity->id;
+            $this->updated = date('Y-m-d H:i:s');
+        }
+
+        return parent::beforeSave($insert);
+    }
+
+    /**
+     *
+     */
+    public function afterFind()
+    {
+        $fullPath = $this->getFullPath();
+
+        $this->checkPicture($fullPath);
+
+        return parent::afterFind();
+    }
+
+    /**
+     * @return string
+     */
+    private function getFullPath()
+    {
+        $fileName = implode('.', [$this->name, $this->extension]);
+
+        return $fileName;
+    }
+
+    /**
+     * @param $fullPath
+     * @return bool
+     */
+    public function checkPicture($fullPath)
+    {
+        //    $variable = $img = Url::to('@app/test.jpg');
+        $test = Url::to('@app/web/images/party/pmdb.jpg');
+
+        if (file_exists($test)) {
+            $modified = filectime($test);
+
+            if ($modified == strtotime($this->checked)) {
+                if (($modified + 60*15) >= time()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

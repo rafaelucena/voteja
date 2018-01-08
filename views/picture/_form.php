@@ -20,6 +20,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'alt')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'hash')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'active')->checkbox() ?>
 
     <div class="form-group">
