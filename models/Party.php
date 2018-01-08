@@ -6,7 +6,8 @@ use Yii;
 
 /**
  * This is the model class for table "party".
- *
+
+ * Attributes section
  * @property int $id
  * @property int $picture_id
  * @property int $address_id
@@ -21,7 +22,8 @@ use Yii;
  * @property int $updated_by
  * @property string $created
  * @property string $updated
- *
+
+ * Relations section
  * @property Address $address
  * @property User $createdBy
  * @property User $updatedBy
@@ -107,17 +109,17 @@ class Party extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUpdatedBy()
+    public function getCreatedBy()
     {
-        return $this->hasOne(User::className(), ['id' => 'updated_by']);
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCreatedBy()
+    public function getUpdatedBy()
     {
-        return $this->hasOne(User::className(), ['id' => 'created_by']);
+        return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
 
     /**
@@ -131,7 +133,7 @@ class Party extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPartyVisits()
+    public function getPartyVisit()
     {
         return $this->hasMany(PartyVisit::className(), ['party_id' => 'id']);
     }
