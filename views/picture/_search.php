@@ -21,8 +21,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'local') ?>
-
     <?= $form->field($model, 'extension') ?>
 
     <?php // echo $form->field($model, 'alt') ?>

@@ -129,7 +129,19 @@ class Picture extends \yii\db\ActiveRecord
     {
         $fullPath = $this->getFullPath();
 
-        $this->checkPicture($fullPath);
+        if (!$this->checkPicture($fullPath)) {
+            if ($this->hash) {
+                $directory = $this->hash[0];
+                $source = implode('/', [Url::to('@app/web/files'), $directory, $this->hash]);
+
+                $destination = implode('/', [Url::to('@app/web/images/party'), 'pmdb.jpg']);
+
+                if (copy($source, $destination)) {
+                    $this->checked = date( 'Y-m-d H:i:s', filectime($destination));
+                    $this->save();
+                }
+            }
+        }
 
         return parent::afterFind();
     }
@@ -139,7 +151,9 @@ class Picture extends \yii\db\ActiveRecord
      */
     private function getFullPath()
     {
-        $fileName = implode('.', [$this->name, $this->extension]);
+        $local = Url::to('@app/web/images/party/');
+
+        $fileName = $local . implode('.', [$this->name, $this->extension]);
 
         return $fileName;
     }
@@ -150,11 +164,8 @@ class Picture extends \yii\db\ActiveRecord
      */
     public function checkPicture($fullPath)
     {
-        //    $variable = $img = Url::to('@app/test.jpg');
-        $test = Url::to('@app/web/images/party/pmdb.jpg');
-
-        if (file_exists($test)) {
-            $modified = filectime($test);
+        if (file_exists($fullPath)) {
+            $modified = filectime($fullPath);
 
             if ($modified == strtotime($this->checked)) {
                 if (($modified + 60*15) >= time()) {

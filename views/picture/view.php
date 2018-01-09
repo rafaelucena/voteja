@@ -49,7 +49,6 @@ $this->title = 'View: ' . $this->title . ' - ' . $model->name;
             ],
             'picture_type_id',
             'name',
-            'local',
             'extension',
             'alt',
             'size',

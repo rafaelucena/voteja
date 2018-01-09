@@ -31,7 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
             Attributes::index('id'),
             'picture_type_id',
             'name',
-            'local',
             'extension',
             //'alt',
             //'size',
