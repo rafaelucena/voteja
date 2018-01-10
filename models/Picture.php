@@ -67,6 +67,7 @@ class Picture extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'image' => 'Image',
             'picture_type_id' => 'Picture Type ID',
             'name' => 'Name',
             'extension' => 'Extension',
@@ -134,9 +135,10 @@ class Picture extends \yii\db\ActiveRecord
                 $directory = $this->hash[0];
                 $source = implode('/', [Url::to('@app/web/files'), $directory, $this->hash]);
 
-                $destination = implode('/', [Url::to('@app/web/images/party'), 'pmdb.jpg']);
+                $destination = implode('/', [Url::to('@app/web/images/party'), implode('.', [$this->name, $this->extension])]);
 
                 if (copy($source, $destination)) {
+                    chmod($destination, 0775);
                     $this->checked = date( 'Y-m-d H:i:s', filectime($destination));
                     $this->save();
                 }

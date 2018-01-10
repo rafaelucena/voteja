@@ -29,22 +29,17 @@ $this->title = 'View: ' . $this->title . ' - ' . $model->name;
         ]) ?>
     </p>
 
-    <?php
-        echo Html::img('@web/images/party/pmdb.jpg');
-    ?>
-
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
             [
-                'label' => '',
                 'attribute' => 'image',
                 'format' => 'raw',
                 'value' => function ($model) {
                     $fileName = $model->image = implode('.', [$model->name, $model->extension]);
 
-                    return Html::img("@web/images/party/$fileName");
+                    return Html::img("@web/images/party/$fileName", ['width' => '75px', 'height' => '50px']);
                 },
             ],
             'picture_type_id',
@@ -54,6 +49,7 @@ $this->title = 'View: ' . $this->title . ' - ' . $model->name;
             'size',
             'active:boolean',
             'hash',
+            'checked',
             // Created
             Attributes::view('created'),
             // Updated

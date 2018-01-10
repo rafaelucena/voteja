@@ -19,7 +19,7 @@ class PictureSearch extends Picture
     {
         return [
             [['id', 'picture_type_id', 'size', 'created_by', 'updated_by'], 'integer'],
-            [['name', 'local', 'extension', 'alt', 'hash', 'created', 'updated'], 'safe'],
+            [['name', 'extension', 'alt', 'hash', 'created', 'updated'], 'safe'],
             [['active'], 'boolean'],
         ];
     }
@@ -71,7 +71,6 @@ class PictureSearch extends Picture
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'local', $this->local])
             ->andFilterWhere(['like', 'extension', $this->extension])
             ->andFilterWhere(['like', 'alt', $this->alt])
             ->andFilterWhere(['like', 'hash', $this->hash]);
