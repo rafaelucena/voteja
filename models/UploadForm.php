@@ -3,6 +3,7 @@
 namespace app\models;
 
 use yii\base\Model;
+use yii\helpers\Url;
 use yii\web\UploadedFile;
 
 class UploadForm extends Model
@@ -28,7 +29,7 @@ class UploadForm extends Model
     public function upload()
     {
         if ($this->validate()) {
-            $this->imageFile->saveAs('uploads/' . $this->imageFile->baseName . '.' . $this->imageFile->extension);
+            $this->imageFile->saveAs(Url::to('@app/web/files/') . $this->imageFile->baseName . '.' . $this->imageFile->extension);
             return true;
         } else {
             return false;
