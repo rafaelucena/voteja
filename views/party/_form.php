@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Party */
+/* @var $modelPicture app\models\Picture */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -12,23 +13,37 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?php //echo $form->field($model, 'picture_id')->textInput() ?>
+    <div class="picture-form-section">
+        <?php /** PICTURE SECTION **/ ?>
 
-    <?php //echo $form->field($model, 'address_id')->textInput() ?>
+        <?= $form->field($modelPicture, 'image')->fileInput() ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($modelPicture, 'picture_type_id')->textInput() ?>
 
-    <?= $form->field($model, 'number')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($modelPicture, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($modelPicture, 'alt')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+        <?= $form->field($modelPicture, 'active')->checkbox() ?>
+    </div>
 
-    <?= $form->field($model, 'since')->textInput() ?>
+    <div class="party-form-section">
+        <?php /** PARTY SECTION **/ ?>
 
-    <?= $form->field($model, 'until')->textInput() ?>
+        <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'active')->checkbox() ?>
+        <?= $form->field($model, 'number')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+
+        <?= $form->field($model, 'since')->textInput() ?>
+
+        <?= $form->field($model, 'until')->textInput() ?>
+
+        <?= $form->field($model, 'active')->checkbox() ?>
+    </div>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

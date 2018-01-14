@@ -3,12 +3,15 @@
 namespace app\controllers;
 
 use Yii;
+
 use app\models\Party;
 use app\models\PartySearch;
 use app\models\PartyHistorySearch;
+use app\models\Picture;
 
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 use yii\filters\VerbFilter;
 
@@ -68,6 +71,7 @@ class PartyController extends Controller
     public function actionCreate()
     {
         $model = new Party();
+        $modelPicture = new Picture();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -75,6 +79,7 @@ class PartyController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'modelPicture' => $modelPicture,
         ]);
     }
 
@@ -88,13 +93,25 @@ class PartyController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $modelPicture = $model->partyPicture ? : new Picture();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+            $modelPicture->load(Yii::$app->request->post());
+
+            $modelPicture->image = UploadedFile::getInstance($modelPicture, 'image');
+//            echo ((string)__line__ . '-' . __file__ . '<br>');
+//            echo ('<pre>');
+//            print_r($modelPicture);
+//            echo ('</pre>');
+//            die;
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'modelPicture' => $modelPicture,
         ]);
     }
 
