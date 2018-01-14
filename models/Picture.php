@@ -2,8 +2,9 @@
 
 namespace app\models;
 
-use function GuzzleHttp\Psr7\mimetype_from_filename;
 use yii\helpers\Url;
+use yii\web\UploadedFile;
+
 use Yii;
 
 /**
@@ -31,6 +32,9 @@ use Yii;
  */
 class Picture extends \yii\db\ActiveRecord
 {
+    /**
+     * @var UploadedFile $image
+     */
     public $image;
 
     /**
@@ -47,13 +51,16 @@ class Picture extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['picture_type_id', 'name'/*, 'created_by', 'created'*/], 'required'],
+            [['image'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
+            [['picture_type_id', 'name', 'image'/*, 'created_by', 'created'*/], 'required'],
             [['picture_type_id', 'size', 'created_by', 'updated_by'], 'integer'],
             [['active'], 'boolean'],
             [['created', 'updated', 'checked'], 'safe'],
             [['name', 'hash'], 'string', 'max' => 255],
             [['extension'], 'string', 'max' => 15],
             [['alt'], 'string', 'max' => 127],
+            [['name'], 'match', 'pattern' => '/^[A-z]\w*$/', 'message' => 'Invalid name for files.'],
+            [['alt'], 'match', 'pattern' => '/^[A-z](\w|\s)*$/', 'message' => 'Invalid description.'],
             [['picture_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => PictureType::className(), 'targetAttribute' => ['picture_type_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
@@ -79,7 +86,7 @@ class Picture extends \yii\db\ActiveRecord
             'updated_by' => 'Updated By',
             'created' => 'Created',
             'updated' => 'Updated',
-            'Checked' => 'Checked',
+            'checked' => 'Checked',
         ];
     }
 
@@ -111,7 +118,8 @@ class Picture extends \yii\db\ActiveRecord
      * @param bool $insert
      * @return bool
      */
-    public function beforeSave($insert) {
+    public function beforeSave($insert)
+    {
         if ($insert) {
             $this->created_by = \Yii::$app->user->identity->id;
             $this->created = date('Y-m-d H:i:s');
@@ -119,6 +127,14 @@ class Picture extends \yii\db\ActiveRecord
             $this->updated_by = \Yii::$app->user->identity->id;
             $this->updated = date('Y-m-d H:i:s');
         }
+
+        $this->hash = sha1(implode('-', [$this->name, date('Y-m-d H:i:s')]));
+        $this->extension = $this->image->extension;
+
+        mkdir(Url::to('@app/web/files' . '/' . $this->hash[0]));
+
+        //@TODO - Fix check and creation of folders before uploading files
+        $this->image->saveAs(implode('/', [Url::to('@app/web/files'), $this->hash[0], $this->hash]));
 
         return parent::beforeSave($insert);
     }

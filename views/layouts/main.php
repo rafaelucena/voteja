@@ -53,6 +53,7 @@ AppAsset::register($this);
                     'label' => 'Admin',
                     'items' => [
                         ['label' => 'History types', 'url' => ['/history-type/index']],
+                        ['label' => 'Picture types', 'url' => ['/picture-type/index']],
                         ['label' => 'Gii', 'url' => ['/gii']],
                     ],
                 ]

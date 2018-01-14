@@ -3,10 +3,15 @@
 namespace app\controllers;
 
 use Yii;
+
 use app\models\Picture;
 use app\models\PictureSearch;
+use app\models\UploadPictureForm;
+
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
+
 use yii\filters\VerbFilter;
 
 /**
@@ -66,8 +71,12 @@ class PictureController extends Controller
     {
         $model = new Picture();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->image = UploadedFile::getInstance($model, 'image');
+
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [
