@@ -73,8 +73,20 @@ class PartyController extends Controller
         $model = new Party();
         $modelPicture = new Picture();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+
+            $modelPicture->load(Yii::$app->request->post());
+            $modelPicture->image = UploadedFile::getInstance($modelPicture, 'image');
+
+            if ($model->validate() & $modelPicture->validate()) {
+                if ($modelPicture->save()) {
+                    $model->picture_id = $modelPicture->id;
+                    $model->save();
+
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
         }
 
         return $this->render('create', [
@@ -95,18 +107,17 @@ class PartyController extends Controller
         $model = $this->findModel($id);
         $modelPicture = $model->partyPicture ? : new Picture();
 
-//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
         if (Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
-            $modelPicture->load(Yii::$app->request->post());
 
+            $modelPicture->load(Yii::$app->request->post());
             $modelPicture->image = UploadedFile::getInstance($modelPicture, 'image');
-//            echo ((string)__line__ . '-' . __file__ . '<br>');
-//            echo ('<pre>');
-//            print_r($modelPicture);
-//            echo ('</pre>');
-//            die;
-            return $this->redirect(['view', 'id' => $model->id]);
+
+            if ($model->validate() & $modelPicture->validate()) {
+                if ($model->save() && $modelPicture->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
         }
 
         return $this->render('update', [

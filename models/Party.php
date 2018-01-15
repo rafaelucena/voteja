@@ -27,6 +27,7 @@ use Yii;
  * @property Address $address
  * @property User $createdBy
  * @property User $updatedBy
+ * @property PartyPicture $partyPicture
  * @property PartyHistory[] $partyHistory
  * @property PartyVisit[] $partyVisit
  */
@@ -125,6 +126,14 @@ class Party extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getPartyPicture()
+    {
+        return $this->hasOne(Picture::className(), ['id' => 'picture_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getPartyHistory()
     {
         return $this->hasMany(PartyHistory::className(), ['party_id' => 'id']);
@@ -165,6 +174,13 @@ class Party extends \yii\db\ActiveRecord
         return parent::afterSave($insert, $changedAttributes);
     }
 
+    public function afterFind()
+    {
+        $this->createOrUpdateVisits();
+
+        return parent::afterFind();
+    }
+
     /**
      * @param $insert
      * @param $changedAttributes
@@ -195,6 +211,14 @@ class Party extends \yii\db\ActiveRecord
         }
 
         return $partyHistory->save();
+    }
+
+    /**
+     *
+     */
+    private function createOrUpdateVisits()
+    {
+        return;
     }
 }
 

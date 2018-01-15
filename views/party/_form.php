@@ -13,37 +13,15 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <div class="picture-form-section">
-        <?php /** PICTURE SECTION **/ ?>
+    <?= $this->render('@views/picture/_fields', [
+        'form' => $form,
+        'model' => $modelPicture,
+    ]) ?>
 
-        <?= $form->field($modelPicture, 'image')->fileInput() ?>
-
-        <?= $form->field($modelPicture, 'picture_type_id')->textInput() ?>
-
-        <?= $form->field($modelPicture, 'name')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($modelPicture, 'alt')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($modelPicture, 'active')->checkbox() ?>
-    </div>
-
-    <div class="party-form-section">
-        <?php /** PARTY SECTION **/ ?>
-
-        <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'number')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-
-        <?= $form->field($model, 'since')->textInput() ?>
-
-        <?= $form->field($model, 'until')->textInput() ?>
-
-        <?= $form->field($model, 'active')->checkbox() ?>
-    </div>
+    <?= $this->render('_fields', [
+        'form' => $form,
+        'model' => $model,
+    ]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

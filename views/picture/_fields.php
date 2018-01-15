@@ -4,12 +4,16 @@
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<?= $form->field($model, 'image')->fileInput() ?>
+<div class="picture-form-fields">
 
-<?= $form->field($model, 'picture_type_id')->textInput() ?>
+    <?= $form->field($model, 'image')->fileInput() ?>
 
-<?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'picture_type_id')->textInput() ?>
 
-<?= $form->field($model, 'alt')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-<?= $form->field($model, 'active')->checkbox() ?>
+    <?= $form->field($model, 'alt')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'active')->checkbox() ?>
+
+</div>

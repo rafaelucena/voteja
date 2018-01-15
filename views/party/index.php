@@ -30,8 +30,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
             // Id
             Attributes::index('id'),
-            'picture_id',
-            'address_id',
+            [
+                'attribute' => 'image',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    if ($model->partyPicture) {
+                        $fileName = implode('.', [$model->partyPicture->name, $model->partyPicture->extension]);
+
+                        return Html::img("@web/images/party/$fileName", ['width' => '75px', 'height' => '50px']);
+                    }
+                },
+            ],
+//            'picture_id',
+            //'address_id',
             //'name',
             'number',
             'code',

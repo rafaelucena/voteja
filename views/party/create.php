@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 
-
 /* @var $this yii\web\View */
 /* @var $model app\models\Party */
 /* @var $modelPicture app\models\Picture */
@@ -15,12 +14,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('@views/picture/_form', [
-        'model' => $modelPicture,
-    ]) ?>
-
     <?= $this->render('_form', [
         'model' => $model,
+        'modelPicture' => $modelPicture,
     ]) ?>
 
 </div>
