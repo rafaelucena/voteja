@@ -27,7 +27,7 @@ use Yii;
  * @property Address $address
  * @property User $createdBy
  * @property User $updatedBy
- * @property PartyPicture $partyPicture
+ * @property Picture $picture
  * @property PartyHistory[] $partyHistory
  * @property PartyVisit[] $partyVisit
  */
@@ -126,7 +126,7 @@ class Party extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPartyPicture()
+    public function getPicture()
     {
         return $this->hasOne(Picture::className(), ['id' => 'picture_id']);
     }

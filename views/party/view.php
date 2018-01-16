@@ -32,7 +32,8 @@ $this->title = 'View: ' . $this->title . ' - ' . $model->code;
         'model' => $model,
         'attributes' => [
             'id',
-            'picture_id',
+            // Picture
+            Attributes::view('logo'),
             'address_id',
             'name',
             'number',
