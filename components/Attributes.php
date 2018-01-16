@@ -81,6 +81,19 @@ class Attributes extends Common
                     },
                 ];
                 break;
+            case 'logo':
+                $output = [
+                    'label' => 'Logo',
+                    'attribute' => 'image',
+                    'format' => 'raw',
+                    'value' => function ($model) {
+                        if ($model->picture) {
+                            $fileName = implode('.', [$model->picture->name, $model->picture->extension]);
+
+                            return Html::img("@web/images/party/$fileName", ['width' => '150px', 'height' => '100px', 'class' => 'logo']);
+                        }
+                    },
+                ];
         }
 
         return $output;
@@ -129,6 +142,19 @@ class Attributes extends Common
                     },
                 ];
                 break;
+            case 'logo':
+                $output = [
+                    'label' => 'Logo',
+                    'attribute' => 'image',
+                    'format' => 'raw',
+                    'value' => function ($model) {
+                        if ($model->picture) {
+                            $fileName = implode('.', [$model->picture->name, $model->picture->extension]);
+
+                            return Html::img("@web/images/party/$fileName", ['width' => '75px', 'height' => '50px', 'class' => 'logo']);
+                        }
+                    },
+                ];
         }
 
         return $output;
