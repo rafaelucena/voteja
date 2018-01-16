@@ -105,7 +105,7 @@ class PartyController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $modelPicture = $model->partyPicture ? : new Picture();
+        $modelPicture = $model->picture ? : new Picture();
 
         if (Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
@@ -147,6 +147,7 @@ class PartyController extends Controller
      */
     public function actionDisplay($id)
     {
+        # Party
         $model = $this->findModel($id);
 
         # PartyHistory
