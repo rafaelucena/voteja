@@ -33,6 +33,8 @@ $this->title = $this->title . ' - ' . $model->code;
         'model' => $model,
         'attributes' => [
             'id',
+            // Picture
+            Attributes::view('logo'),
             'name',
             'number',
             'code',
