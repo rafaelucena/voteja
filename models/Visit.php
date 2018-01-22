@@ -13,7 +13,7 @@ use Yii;
  * @property string $date
  * @property string $last
  *
- * @property PartyVisit[] $partyVisits
+ * @property PartyVisit[] $partyVisit
  * @property VisitType $visitType
  */
 class Visit extends \yii\db\ActiveRecord
@@ -56,7 +56,7 @@ class Visit extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPartyVisits()
+    public function getPartyVisit()
     {
         return $this->hasMany(PartyVisit::className(), ['visit_id' => 'id']);
     }
