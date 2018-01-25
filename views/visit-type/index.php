@@ -1,13 +1,15 @@
 <?php
 
+use yii\helpers\Attributes;
 use yii\helpers\Html;
+
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\VisitTypeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Visit Types';
+$this->title = 'Visit Type';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="visit-type-index">
@@ -25,13 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // Id
+            Attributes::index('id'),
             'name',
             'active:boolean',
-            'created_by',
-            'updated_by',
-            //'created',
-            //'updated',
+            // Created
+            Attributes::index('created'),
+            // Updated
+            Attributes::index('updated'),
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

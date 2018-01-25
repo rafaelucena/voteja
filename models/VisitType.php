@@ -15,12 +15,14 @@ use Yii;
  * @property string $created
  * @property string $updated
  *
- * @property Visit[] $visit
  * @property User $createdBy
  * @property User $updatedBy
  */
 class VisitType extends \yii\db\ActiveRecord
 {
+    const VISIT_TYPE_USER = 1;
+    const VISIT_TYPE_GUEST = 2;
+
     /**
      * @inheritdoc
      */
@@ -35,7 +37,7 @@ class VisitType extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'created_by', 'created'], 'required'],
+            [['name'/*, 'created_by', 'created'*/], 'required'],
             [['active'], 'boolean'],
             [['created_by', 'updated_by'], 'integer'],
             [['created', 'updated'], 'safe'],
@@ -64,14 +66,6 @@ class VisitType extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getVisit()
-    {
-        return $this->hasMany(Visit::className(), ['visit_type_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getUpdatedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
@@ -83,5 +77,21 @@ class VisitType extends \yii\db\ActiveRecord
     public function getCreatedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'created_by']);
+    }
+
+    /**
+     * @param bool $insert
+     * @return bool
+     */
+    public function beforeSave($insert) {
+        if ($insert) {
+            $this->created_by = \Yii::$app->user->identity->id;
+            $this->created = date('Y-m-d H:i:s');
+        } else {
+            $this->updated_by = \Yii::$app->user->identity->id;
+            $this->updated = date('Y-m-d H:i:s');
+        }
+
+        return parent::beforeSave($insert);
     }
 }
