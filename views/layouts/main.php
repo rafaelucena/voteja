@@ -54,6 +54,7 @@ AppAsset::register($this);
                     'items' => [
                         ['label' => 'History types', 'url' => ['/history-type/index']],
                         ['label' => 'Picture types', 'url' => ['/picture-type/index']],
+                        ['label' => 'Visit types', 'url' => ['/visit-type/index']],
                         ['label' => 'Gii', 'url' => ['/gii']],
                     ],
                 ]
