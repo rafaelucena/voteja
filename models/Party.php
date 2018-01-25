@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\Common;
 
 /**
  * This is the model class for table "party".
@@ -218,6 +219,13 @@ class Party extends \yii\db\ActiveRecord
      */
     private function createOrUpdateVisits()
     {
+        if (Common::getActionId() === 'display') {
+            echo ((string)__line__ . '-' . __file__ . '<br>');
+            echo ('<pre>');
+            print_r($this->partyHistory);
+            echo ('</pre>');
+            die;
+        }
         return;
     }
 }
