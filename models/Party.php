@@ -31,6 +31,7 @@ use yii\helpers\Common;
  * @property Picture $picture
  * @property PartyHistory[] $partyHistory
  * @property PartyVisit[] $partyVisit
+ * @property PartyVisitLast[] $partyVisitLast
  */
 class Party extends \yii\db\ActiveRecord
 {
@@ -149,6 +150,16 @@ class Party extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPartyVisitLast()
+    {
+        return $this->hasMany(PartyVisit::className(), ['party_id' => 'id'])
+            ->where(['last' => 1])
+            ->orderBy('id DESC');
+    }
+
+    /**
      * @param bool $insert
      * @return bool
      */
@@ -177,7 +188,7 @@ class Party extends \yii\db\ActiveRecord
 
     public function afterFind()
     {
-        $this->createOrUpdateVisits();
+        $this->createOrUpdateLastVisits();
 
         return parent::afterFind();
     }
@@ -217,16 +228,48 @@ class Party extends \yii\db\ActiveRecord
     /**
      *
      */
-    private function createOrUpdateVisits()
+    private function createOrUpdateLastVisits()
     {
         if (Common::getActionId() === 'display') {
-            echo ((string)__line__ . '-' . __file__ . '<br>');
-            echo ('<pre>');
-            print_r($this->partyHistory);
-            echo ('</pre>');
-            die;
+            if ($this->partyVisitLast) {
+                foreach ($this->partyVisitLast as $partyVisitLast) {
+                    if ($partyVisitLast->visit->date === date('Y-m-d')) {
+                        $partyVisitLast->visit->count++;
+                        $partyVisitLast->visit->update();
+                    } else {
+                        $this->createNewVisit('daily');
+                    }
+                }
+            } else {
+                $this->createNewVisit('daily');
+            }
         }
         return;
+    }
+
+    /**
+     * @param null $type
+     */
+    private function createNewVisit($type = null)
+    {
+        if ($type == 'daily') {
+            $visit = new Visit();
+
+            $visit->visit_type_id = VisitType::VISIT_TYPE_DAILY;
+            $visit->date = date('Y-m-d');
+            $visit->count = 1;
+
+            if ($visit->save()) {
+                $partyVisit = new PartyVisit();
+
+                $partyVisit->party_id = $this->id;
+                $partyVisit->visit_id = $visit->id;
+                $partyVisit->visit_type_id = VisitType::VISIT_TYPE_DAILY;
+                $partyVisit->last = 1;
+
+                $partyVisit->save();
+            }
+        }
     }
 }
 
