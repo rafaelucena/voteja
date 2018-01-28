@@ -10,6 +10,8 @@ use Yii;
  * @property int $id
  * @property int $visit_id
  * @property int $party_id
+ * @property int $visit_type_id
+ * @property bool $last
  *
  * @property Party $party
  * @property Visit $visit
@@ -30,8 +32,9 @@ class PartyVisit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['visit_id', 'party_id'], 'required'],
-            [['visit_id', 'party_id'], 'integer'],
+            [['visit_id', 'party_id', 'visit_type_id'], 'required'],
+            [['visit_id', 'party_id', 'visit_type_id'], 'integer'],
+            [['last'], 'boolean'],
             [['party_id'], 'exist', 'skipOnError' => true, 'targetClass' => Party::className(), 'targetAttribute' => ['party_id' => 'id']],
             [['visit_id'], 'exist', 'skipOnError' => true, 'targetClass' => Visit::className(), 'targetAttribute' => ['visit_id' => 'id']],
         ];
@@ -46,6 +49,8 @@ class PartyVisit extends \yii\db\ActiveRecord
             'id' => 'ID',
             'visit_id' => 'Visit ID',
             'party_id' => 'Party ID',
+            'visit_type_id' => 'Visit Type ID',
+            'last' => 'Last',
         ];
     }
 
