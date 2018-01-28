@@ -11,7 +11,6 @@ use Yii;
  * @property int $visit_type_id
  * @property int $count
  * @property string $date
- * @property string $last
  *
  * @property PartyVisit[] $partyVisit
  * @property VisitType $visitType
@@ -32,9 +31,9 @@ class Visit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['visit_type_id', 'count', 'date', 'last'], 'required'],
+            [['visit_type_id', 'count', 'date'], 'required'],
             [['visit_type_id', 'count'], 'integer'],
-            [['date', 'last'], 'safe'],
+            [['date'], 'safe'],
             [['visit_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => VisitType::className(), 'targetAttribute' => ['visit_type_id' => 'id']],
         ];
     }
@@ -49,7 +48,6 @@ class Visit extends \yii\db\ActiveRecord
             'visit_type_id' => 'Visit Type ID',
             'count' => 'Count',
             'date' => 'Date',
-            'last' => 'Last',
         ];
     }
 

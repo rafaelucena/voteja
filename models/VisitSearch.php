@@ -19,7 +19,7 @@ class VisitSearch extends Visit
     {
         return [
             [['id', 'visit_type_id', 'count'], 'integer'],
-            [['date', 'last'], 'safe'],
+            [['date'], 'safe'],
         ];
     }
 
@@ -63,7 +63,6 @@ class VisitSearch extends Visit
             'visit_type_id' => $this->visit_type_id,
             'count' => $this->count,
             'date' => $this->date,
-            'last' => $this->last,
         ]);
 
         return $dataProvider;
