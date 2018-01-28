@@ -57,8 +57,6 @@ $this->title = $this->title . ' - ' . $model->code;
         'columns' => [
             // Id
             Attributes::index('id'),
-            // Party
-            Attributes::general('party'),
             // Created
             Attributes::index('created'),
         ],
