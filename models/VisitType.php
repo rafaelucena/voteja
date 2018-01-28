@@ -20,8 +20,8 @@ use Yii;
  */
 class VisitType extends \yii\db\ActiveRecord
 {
-    const VISIT_TYPE_USER = 1;
-    const VISIT_TYPE_GUEST = 2;
+    const VISIT_TYPE_DAILY = 1;
+    const VISIT_TYPE_WEEKLY = 2;
 
     /**
      * @inheritdoc
