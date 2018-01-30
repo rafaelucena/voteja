@@ -157,6 +157,7 @@ class Picture extends \yii\db\ActiveRecord
                     chmod($destination, 0775);
                     $this->checked = date( 'Y-m-d H:i:s', filectime($destination));
                     $this->save();
+                    //@TODO - Fix this validation (0061)
                 }
             }
         }
