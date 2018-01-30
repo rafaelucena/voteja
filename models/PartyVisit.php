@@ -69,4 +69,24 @@ class PartyVisit extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Visit::className(), ['id' => 'visit_id']);
     }
+
+    /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     * @throws \yii\db\Exception
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            // Remove old histories with last active for the same party ID.
+            Yii::$app->db->createCommand()->update(
+                'party_visit',
+                ['last' => 0],
+                ['and', 'id != :id', 'party_id = :party_id', 'last = 1'],
+                [':id' => $this->id, ':party_id' => $this->party_id]
+            )->execute();
+        }
+
+        return parent::afterSave($insert, $changedAttributes);
+    }
 }
