@@ -44,6 +44,7 @@ AppAsset::register($this);
                 'items' => [
                     ['label' => 'Index', 'url' => ['/party/index']],
                     ['label' => 'History', 'url' => ['/party-history/index']],
+                    ['label' => 'Visits', 'url' => ['/party-visit/index']],
                 ],
             ],
             ['label' => 'About', 'url' => ['/site/about']],
