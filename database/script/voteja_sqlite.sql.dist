@@ -850,7 +850,6 @@ CREATE TABLE IF NOT EXISTS 'visit' (
   'visit_type_id' INT NOT NULL,
   'count' INT NOT NULL,
   'date' DATE NOT NULL,
-  'last' DATETIME NOT NULL,
       CONSTRAINT 'fk_visit_visit_type1'
     FOREIGN KEY ('visit_type_id')
     REFERENCES 'visit_type' ('id')
@@ -865,7 +864,9 @@ CREATE TABLE IF NOT EXISTS 'party_visit' (
   'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   'visit_id' INT NOT NULL,
   'party_id' INT NOT NULL,
-        CONSTRAINT 'fk_party_visit_visit1'
+  'visit_type_id' INT NOT NULL,
+  'last' TINYINT(1) NULL,
+          CONSTRAINT 'fk_party_visit_visit1'
     FOREIGN KEY ('visit_id')
     REFERENCES 'visit' ('id')
     ON DELETE NO ACTION
@@ -873,6 +874,31 @@ CREATE TABLE IF NOT EXISTS 'party_visit' (
   CONSTRAINT 'fk_party_visit_party1'
     FOREIGN KEY ('party_id')
     REFERENCES 'party' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_party_visit_visit_type1'
+    FOREIGN KEY ('visit_type_id')
+    REFERENCES 'visit_type' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'party_source' ;
+
+CREATE TABLE IF NOT EXISTS 'party_source' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'party_id' INT NOT NULL,
+  'source_id' INT NOT NULL,
+  'last' TINYINT(1) NULL,
+        CONSTRAINT 'fk_party_source_party1'
+    FOREIGN KEY ('party_id')
+    REFERENCES 'party' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_party_source_source1'
+    FOREIGN KEY ('source_id')
+    REFERENCES 'source' ('id')
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
