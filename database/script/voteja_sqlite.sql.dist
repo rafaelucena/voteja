@@ -270,10 +270,64 @@ CREATE TABLE IF NOT EXISTS 'party' (
 );
 
 
+DROP TABLE IF EXISTS 'trust' ;
+
+CREATE TABLE IF NOT EXISTS 'trust' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'name' VARCHAR(31) NOT NULL,
+  'level' INT NOT NULL,
+  'active' TINYINT(1) NULL,
+  'created_by' INT NOT NULL,
+  'updated_by' INT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+        CONSTRAINT 'fk_trust_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_trust_user2'
+    FOREIGN KEY ('updated_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
+DROP TABLE IF EXISTS 'source_valid' ;
+
+CREATE TABLE IF NOT EXISTS 'source_valid' (
+  'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'trust_id' INT NOT NULL,
+  'name' VARCHAR(31) NOT NULL,
+  'active' TINYINT(1) NULL,
+  'created_by' INT NOT NULL,
+  'updated_by' INT NULL,
+  'created' DATETIME NOT NULL,
+  'updated' DATETIME NULL,
+          CONSTRAINT 'fk_source_valid_trust1'
+    FOREIGN KEY ('trust_id')
+    REFERENCES 'trust' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_source_valid_user1'
+    FOREIGN KEY ('created_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_source_valid_user2'
+    FOREIGN KEY ('updated_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+
 DROP TABLE IF EXISTS 'source' ;
 
 CREATE TABLE IF NOT EXISTS 'source' (
   'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  'source_valid_id' INT NOT NULL,
   'title' VARCHAR(63) NULL,
   'description' VARCHAR(127) NULL,
   'url' VARCHAR(511) NULL,
@@ -281,16 +335,27 @@ CREATE TABLE IF NOT EXISTS 'source' (
   'active' TINYINT(1) NULL,
   'created_by' INT NOT NULL,
   'updated_by' INT NULL,
+  'deleted_by' INT NULL,
   'created' DATETIME NOT NULL,
   'updated' DATETIME NULL,
   'deleted' DATETIME NULL,
-        CONSTRAINT 'fk_source_user1'
+            CONSTRAINT 'fk_source_user1'
     FOREIGN KEY ('created_by')
     REFERENCES 'user' ('id')
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT 'fk_source_user2'
     FOREIGN KEY ('updated_by')
+    REFERENCES 'user' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_source_source_valid1'
+    FOREIGN KEY ('source_valid_id')
+    REFERENCES 'source_valid' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT 'fk_source_user3'
+    FOREIGN KEY ('deleted_by')
     REFERENCES 'user' ('id')
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
