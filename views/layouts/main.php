@@ -47,6 +47,13 @@ AppAsset::register($this);
                     ['label' => 'Visits', 'url' => ['/party-visit/index']],
                 ],
             ],
+            [
+                'label' => 'Source',
+                'items' => [
+                    ['label' => 'Index', 'url' => ['/source/index']],
+                    ['label' => 'Valids', 'url' => ['/source-valid/index']],
+                ],
+            ],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->identity ? (
@@ -56,6 +63,7 @@ AppAsset::register($this);
                         ['label' => 'History types', 'url' => ['/history-type/index']],
                         ['label' => 'Picture types', 'url' => ['/picture-type/index']],
                         ['label' => 'Visit types', 'url' => ['/visit-type/index']],
+                        ['label' => 'Trust', 'url' => ['/trust/index']],
                         ['label' => 'Gii', 'url' => ['/gii']],
                     ],
                 ]
