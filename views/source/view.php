@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
+            'source_valid_id',
             'title',
             'description',
             'url:url',
@@ -36,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'active:boolean',
             'created_by',
             'updated_by',
+            'deleted_by',
             'created',
             'updated',
             'deleted',

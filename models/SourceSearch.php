@@ -18,7 +18,7 @@ class SourceSearch extends Source
     public function rules()
     {
         return [
-            [['id', 'created_by', 'updated_by'], 'integer'],
+            [['id', 'source_valid_id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['title', 'description', 'url', 'when', 'created', 'updated', 'deleted'], 'safe'],
             [['active'], 'boolean'],
         ];
@@ -61,10 +61,12 @@ class SourceSearch extends Source
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'source_valid_id' => $this->source_valid_id,
             'when' => $this->when,
             'active' => $this->active,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
+            'deleted_by' => $this->deleted_by,
             'created' => $this->created,
             'updated' => $this->updated,
             'deleted' => $this->deleted,
