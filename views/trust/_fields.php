@@ -15,12 +15,4 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'active')->checkbox() ?>
 
-    <?= $form->field($model, 'created_by')->textInput() ?>
-
-    <?= $form->field($model, 'updated_by')->textInput() ?>
-
-    <?= $form->field($model, 'created')->textInput() ?>
-
-    <?= $form->field($model, 'updated')->textInput() ?>
-
 </div>

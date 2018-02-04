@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Trust */
 
-$this->title = 'Create Trust';
-$this->params['breadcrumbs'][] = ['label' => 'Trusts', 'url' => ['index']];
+$this->title = 'Create';
+$this->params['breadcrumbs'][] = ['label' => 'Trust', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="trust-create">
