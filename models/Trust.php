@@ -16,9 +16,8 @@ use Yii;
  * @property string $created
  * @property string $updated
  *
- * @property SourceValid[] $sourceVals
- * @property User $updatedBy
  * @property User $createdBy
+ * @property User $updatedBy
  */
 class Trust extends \yii\db\ActiveRecord
 {
@@ -36,7 +35,7 @@ class Trust extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'level', 'created_by', 'created'], 'required'],
+            [['name', 'level'/*, 'created_by', 'created'*/], 'required'],
             [['level', 'created_by', 'updated_by'], 'integer'],
             [['active'], 'boolean'],
             [['created', 'updated'], 'safe'],
@@ -66,9 +65,9 @@ class Trust extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSourceVals()
+    public function getCreatedBy()
     {
-        return $this->hasMany(SourceValid::className(), ['trust_id' => 'id']);
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
 
     /**
@@ -80,10 +79,18 @@ class Trust extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @param bool $insert
+     * @return bool
      */
-    public function getCreatedBy()
-    {
-        return $this->hasOne(User::className(), ['id' => 'created_by']);
+    public function beforeSave($insert) {
+        if ($insert) {
+            $this->created_by = \Yii::$app->user->identity->id;
+            $this->created = date('Y-m-d H:i:s');
+        } else {
+            $this->updated_by = \Yii::$app->user->identity->id;
+            $this->updated = date('Y-m-d H:i:s');
+        }
+
+        return parent::beforeSave($insert);
     }
 }
