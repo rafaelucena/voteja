@@ -1,13 +1,15 @@
 <?php
 
+use yii\helpers\Attributes;
 use yii\helpers\Html;
+
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\TrustSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Trusts';
+$this->title = 'Trust';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="trust-index">
@@ -25,14 +27,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // Id
+            Attributes::index('id'),
             'name',
             'level',
             'active:boolean',
-            'created_by',
-            //'updated_by',
-            //'created',
-            //'updated',
+            // Created
+            Attributes::index('created'),
+            // Updated
+            Attributes::index('updated'),
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
