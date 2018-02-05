@@ -294,12 +294,13 @@ CREATE TABLE IF NOT EXISTS 'trust' (
 );
 
 
-DROP TABLE IF EXISTS 'source_valid' ;
+DROP TABLE IF EXISTS 'source_known' ;
 
-CREATE TABLE IF NOT EXISTS 'source_valid' (
+CREATE TABLE IF NOT EXISTS 'source_known' (
   'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   'trust_id' INT NOT NULL,
   'name' VARCHAR(31) NOT NULL,
+  'url' VARCHAR(127) NOT NULL,
   'active' TINYINT(1) NULL,
   'created_by' INT NOT NULL,
   'updated_by' INT NULL,
@@ -327,7 +328,7 @@ DROP TABLE IF EXISTS 'source' ;
 
 CREATE TABLE IF NOT EXISTS 'source' (
   'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  'source_valid_id' INT NOT NULL,
+  'source_known_id' INT NOT NULL,
   'title' VARCHAR(63) NULL,
   'description' VARCHAR(127) NULL,
   'url' VARCHAR(511) NULL,
@@ -349,9 +350,9 @@ CREATE TABLE IF NOT EXISTS 'source' (
     REFERENCES 'user' ('id')
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT 'fk_source_source_valid1'
-    FOREIGN KEY ('source_valid_id')
-    REFERENCES 'source_valid' ('id')
+  CONSTRAINT 'fk_source_source_known1'
+    FOREIGN KEY ('source_known_id')
+    REFERENCES 'source_known' ('id')
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT 'fk_source_user3'
