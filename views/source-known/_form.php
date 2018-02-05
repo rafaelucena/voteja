@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\SourceValid */
+/* @var $model app\models\SourceKnown */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="source-valid-form">
+<div class="source-known-form">
 
     <?php $form = ActiveForm::begin(); ?>
 

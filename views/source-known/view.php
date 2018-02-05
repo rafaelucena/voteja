@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\SourceValid */
+/* @var $model app\models\SourceKnown */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Source Valids', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Source Known', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="source-valid-view">
+<div class="source-known-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

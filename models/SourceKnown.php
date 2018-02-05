@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "source_valid".
+ * This is the model class for table "source_known".
  *
  * @property int $id
  * @property int $trust_id
@@ -21,14 +21,14 @@ use Yii;
  * @property User $createdBy
  * @property Trust $trust
  */
-class SourceValid extends \yii\db\ActiveRecord
+class SourceKnown extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'source_valid';
+        return 'source_known';
     }
 
     /**
@@ -70,7 +70,7 @@ class SourceValid extends \yii\db\ActiveRecord
      */
     public function getSources()
     {
-        return $this->hasMany(Source::className(), ['source_valid_id' => 'id']);
+        return $this->hasMany(Source::className(), ['source_known_id' => 'id']);
     }
 
     /**

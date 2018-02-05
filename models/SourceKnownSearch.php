@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\SourceValid;
+use app\models\SourceKnown;
 
 /**
  * SourceValidSearch represents the model behind the search form of `app\models\SourceValid`.
  */
-class SourceValidSearch extends SourceValid
+class SourceKnownSearch extends SourceKnown
 {
     /**
      * @inheritdoc
@@ -42,7 +42,7 @@ class SourceValidSearch extends SourceValid
      */
     public function search($params)
     {
-        $query = SourceValid::find();
+        $query = SourceKnown::find();
 
         // add conditions that should always apply here
 

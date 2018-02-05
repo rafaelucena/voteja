@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "source".
  *
  * @property int $id
- * @property int $source_valid_id
+ * @property int $source_known_id
  * @property string $title
  * @property string $description
  * @property string $url
@@ -22,7 +22,7 @@ use Yii;
  * @property string $deleted
  *
  * @property PartySource[] $partySources
- * @property SourceValid $sourceValid
+ * @property SourceKnown $sourceKnown
  * @property User $createdBy
  * @property User $updatedBy
  * @property User $deletedBy
@@ -43,15 +43,15 @@ class Source extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['source_valid_id'/*, 'created_by', 'created'*/], 'required'],
-            [['source_valid_id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
+            [['source_known_id'/*, 'created_by', 'created'*/], 'required'],
+            [['source_known_id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['when', 'created', 'updated', 'deleted'], 'safe'],
             [['active'], 'boolean'],
             [['title'], 'string', 'max' => 63],
             [['description'], 'string', 'max' => 127],
             [['url'], 'string', 'max' => 511],
             [['deleted_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['deleted_by' => 'id']],
-            [['source_valid_id'], 'exist', 'skipOnError' => true, 'targetClass' => SourceValid::className(), 'targetAttribute' => ['source_valid_id' => 'id']],
+            [['source_known_id'], 'exist', 'skipOnError' => true, 'targetClass' => SourceKnown::className(), 'targetAttribute' => ['source_known_id' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
         ];
@@ -64,7 +64,7 @@ class Source extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'source_valid_id' => 'Source Valid ID',
+            'source_known_id' => 'Source Known ID',
             'title' => 'Title',
             'description' => 'Description',
             'url' => 'Url',
@@ -90,9 +90,9 @@ class Source extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSourceValid()
+    public function getSourceKnown()
     {
-        return $this->hasOne(SourceValid::className(), ['id' => 'source_valid_id']);
+        return $this->hasOne(SourceKnown::className(), ['id' => 'source_known_id']);
     }
 
     /**

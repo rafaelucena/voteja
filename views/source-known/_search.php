@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\SourceValidSearch */
+/* @var $model app\models\SourceKnownSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="source-valid-search">
+<div class="source-known-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],

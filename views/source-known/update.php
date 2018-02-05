@@ -3,14 +3,14 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\SourceValid */
+/* @var $model app\models\SourceKnown */
 
-$this->title = 'Update Source Valid: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Source Valids', 'url' => ['index']];
+$this->title = 'Update Source Known: ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Source Known', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="source-valid-update">
+<div class="source-known-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

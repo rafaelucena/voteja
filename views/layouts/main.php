@@ -51,7 +51,7 @@ AppAsset::register($this);
                 'label' => 'Source',
                 'items' => [
                     ['label' => 'Index', 'url' => ['/source/index']],
-                    ['label' => 'Valids', 'url' => ['/source-valid/index']],
+                    ['label' => 'Known', 'url' => ['/source-known/index']],
                 ],
             ],
             ['label' => 'About', 'url' => ['/site/about']],
