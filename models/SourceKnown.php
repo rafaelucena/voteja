@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property int $trust_id
  * @property string $name
+ * @property string $url
  * @property bool $active
  * @property int $created_by
  * @property int $updated_by
@@ -37,11 +38,12 @@ class SourceKnown extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['trust_id', 'name', 'created_by', 'created'], 'required'],
+            [['trust_id', 'name', 'url'/*, 'created_by', 'created'*/], 'required'],
             [['trust_id', 'created_by', 'updated_by'], 'integer'],
             [['active'], 'boolean'],
             [['created', 'updated'], 'safe'],
             [['name'], 'string', 'max' => 31],
+            [['url'], 'string', 'max' => 127],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['trust_id'], 'exist', 'skipOnError' => true, 'targetClass' => Trust::className(), 'targetAttribute' => ['trust_id' => 'id']],
@@ -57,6 +59,7 @@ class SourceKnown extends \yii\db\ActiveRecord
             'id' => 'ID',
             'trust_id' => 'Trust ID',
             'name' => 'Name',
+            'url' => 'Url',
             'active' => 'Active',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
