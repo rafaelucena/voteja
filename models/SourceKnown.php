@@ -99,4 +99,20 @@ class SourceKnown extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Trust::className(), ['id' => 'trust_id']);
     }
+
+    /**
+     * @param bool $insert
+     * @return bool
+     */
+    public function beforeSave($insert) {
+        if ($insert) {
+            $this->created_by = \Yii::$app->user->identity->id;
+            $this->created = date('Y-m-d H:i:s');
+        } else {
+            $this->updated_by = \Yii::$app->user->identity->id;
+            $this->updated = date('Y-m-d H:i:s');
+        }
+
+        return parent::beforeSave($insert);
+    }
 }
