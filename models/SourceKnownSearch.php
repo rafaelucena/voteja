@@ -8,7 +8,7 @@ use yii\data\ActiveDataProvider;
 use app\models\SourceKnown;
 
 /**
- * SourceValidSearch represents the model behind the search form of `app\models\SourceValid`.
+ * SourceKnownSearch represents the model behind the search form of `app\models\SourceKnown`.
  */
 class SourceKnownSearch extends SourceKnown
 {
@@ -19,7 +19,7 @@ class SourceKnownSearch extends SourceKnown
     {
         return [
             [['id', 'trust_id', 'created_by', 'updated_by'], 'integer'],
-            [['name', 'created', 'updated'], 'safe'],
+            [['name', 'url', 'created', 'updated'], 'safe'],
             [['active'], 'boolean'],
         ];
     }
@@ -69,7 +69,8 @@ class SourceKnownSearch extends SourceKnown
             'updated' => $this->updated,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'url', $this->url]);
 
         return $dataProvider;
     }

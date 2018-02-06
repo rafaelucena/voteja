@@ -21,9 +21,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name') ?>
 
+    <?= $form->field($model, 'url') ?>
+
     <?= $form->field($model, 'active')->checkbox() ?>
 
-    <?= $form->field($model, 'created_by') ?>
+    <?php // echo $form->field($model, 'created_by') ?>
 
     <?php // echo $form->field($model, 'updated_by') ?>
 

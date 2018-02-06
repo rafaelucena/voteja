@@ -31,6 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'trust_id',
             'name',
+            'url:url',
             'active:boolean',
             'created_by',
             'updated_by',

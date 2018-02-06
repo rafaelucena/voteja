@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
 
 <div class="source-form-fields">
 
-    <?= $form->field($model, 'source_valid_id')->textInput() ?>
+    <?= $form->field($model, 'source_known_id')->textInput() ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
