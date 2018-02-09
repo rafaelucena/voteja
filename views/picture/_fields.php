@@ -1,8 +1,7 @@
 <?php
 
-use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
-use app\models\PictureType;
+use yii\helpers\Inputs;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Picture */
@@ -13,13 +12,7 @@ use app\models\PictureType;
 
     <?= $form->field($model, 'image')->fileInput() ?>
 
-    <?= $form->field($model, 'picture_type_id')->label('Picture type')->dropDownList(
-        ArrayHelper::map(
-            PictureType::find()->all(),
-            'id',
-            'name'
-        )
-    ) ?>
+    <?= Inputs::pictureType($form, $model) ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
