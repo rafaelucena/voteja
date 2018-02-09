@@ -5,11 +5,12 @@ namespace yii\helpers;
 use app\models\PictureType;
 
 use yii\widgets\ActiveField;
+use yii\widgets\ActiveForm;
 
 class Inputs extends Common
 {
     /**
-     * @param object $form
+     * @param ActiveForm $form
      * @param object $model
      * @return ActiveField $field
      */
