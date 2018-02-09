@@ -3,6 +3,7 @@
 namespace yii\helpers;
 
 use app\models\PictureType;
+use app\models\SourceKnown;
 use app\models\Trust;
 
 use yii\db\ActiveRecord;
@@ -21,6 +22,24 @@ class Inputs extends Common
         $field = $form->field($model, 'picture_type_id')->label('Picture type')->dropDownList(
             ArrayHelper::map(
                 PictureType::find()->all(),
+                'id',
+                'name'
+            )
+        );
+
+        return $field;
+    }
+
+    /**
+     * @param ActiveForm $form
+     * @param ActiveRecord $model
+     * @return ActiveField $field
+     */
+    static public function sourceKnown($form, $model)
+    {
+        $field = $form->field($model, 'source_known_id')->label('Source known')->dropDownList(
+            ArrayHelper::map(
+                SourceKnown::find()->all(),
                 'id',
                 'name'
             )

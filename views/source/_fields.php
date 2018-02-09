@@ -1,7 +1,6 @@
 <?php
 
-use yii\helpers\ArrayHelper;
-use app\models\SourceKnown;
+use yii\helpers\Inputs;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Source */
@@ -10,13 +9,7 @@ use app\models\SourceKnown;
 
 <div class="source-form-fields">
 
-    <?= $form->field($model, 'source_known_id')->label('Source known')->dropDownList(
-        ArrayHelper::map(
-            SourceKnown::find()->all(),
-            'id',
-            'name'
-        )
-    ) ?>
+    <?= Inputs::sourceKnown($form, $model) ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
