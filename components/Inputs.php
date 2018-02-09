@@ -4,6 +4,7 @@ namespace yii\helpers;
 
 use app\models\PictureType;
 
+use yii\db\ActiveRecord;
 use yii\widgets\ActiveField;
 use yii\widgets\ActiveForm;
 
@@ -11,7 +12,7 @@ class Inputs extends Common
 {
     /**
      * @param ActiveForm $form
-     * @param object $model
+     * @param ActiveRecord $model
      * @return ActiveField $field
      */
     static public function pictureType($form, $model)
