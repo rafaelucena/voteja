@@ -1,7 +1,6 @@
 <?php
 
-use yii\helpers\ArrayHelper;
-use app\models\Trust;
+use yii\helpers\Inputs;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\SourceKnown */
@@ -10,15 +9,7 @@ use app\models\Trust;
 
 <div class="source-known-form-fields">
 
-    <?= $form->field($model, 'trust_id')->label('Trust')->dropDownList(
-        ArrayHelper::map(
-            Trust::find()->all(),
-            'id',
-            function($model) {
-                return $model['level'] . ' - ' . $model['name'];
-            }
-        )
-    ) ?>
+    <?= Inputs::trust($form, $model) ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
